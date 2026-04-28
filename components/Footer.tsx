@@ -3,21 +3,30 @@
 import { motion } from "framer-motion";
 import { Dumbbell, AtSign as Instagram, Phone, MapPin, Lock, Heart, Clock, ArrowRight, MessageCircle } from "lucide-react";
 
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.78a4.85 4.85 0 0 1-1.01-.09z" />
+    </svg>
+  );
+}
+
 const navLinks = [
-  { label: "Yaşam Alanı", href: "#lifestyle" },
-  { label: "Galeri", href: "#gallery" },
-  { label: "Üye Yorumları", href: "#testimonials" },
-  { label: "Paketler", href: "#packages" },
-  { label: "VKİ Hesapla", href: "#bmi" },
-  { label: "İletişim", href: "#contact" },
+  { label: "Yaşam Alanı", href: "/#lifestyle" },
+  { label: "Galeri", href: "/#gallery" },
+  { label: "Üye Yorumları", href: "/#testimonials" },
+  { label: "Paketler", href: "/packages" },
+  { label: "VKİ Hesapla", href: "/#bmi" },
+  { label: "İletişim", href: "/#contact" },
 ];
 
 const packageLinks = [
   "Standart GYM",
-  "Premium PT",
-  "Reformer Pilates",
+  "EMS Fitness",
+  "Personal Training",
+  "Grup Pilates",
   "Bölgesel İncelme",
-  "Çocuk Gelişim",
+  "Hareket Gelişim",
 ];
 
 export default function Footer() {
@@ -37,7 +46,7 @@ export default function Footer() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <a
-                href="#packages"
+                href="/packages"
                 className="flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-black text-sm px-7 py-3.5 rounded-xl transition-all duration-200 active:scale-95"
               >
                 <Lock className="w-4 h-4" />
@@ -92,11 +101,14 @@ export default function Footer() {
                 </div>
                 Kanal Mah. Halide Edip Cad. Kepez, Antalya
               </div>
-              <div className="flex items-center gap-2.5 text-gray-400 text-sm">
-                <div className="w-7 h-7 bg-gray-800 rounded-lg flex items-center justify-center">
+              <div className="flex items-start gap-2.5 text-gray-400 text-sm">
+                <div className="w-7 h-7 bg-gray-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                   <Clock className="w-3.5 h-3.5" />
                 </div>
-                Pzt – Cmt: 10:00 – 22:00 &nbsp;·&nbsp; <span className="text-red-400">Paz: Kapalı</span>
+                <div>
+                  <p>Pzt – Cum: 09:00 – 23:00</p>
+                  <p>Cmt: 09:00 – 20:00 &nbsp;·&nbsp; <span className="text-red-400">Paz: Kapalı</span></p>
+                </div>
               </div>
             </div>
 
@@ -108,6 +120,14 @@ export default function Footer() {
                 className="w-9 h-9 bg-gray-800 hover:bg-gradient-to-br hover:from-pink-500 hover:to-purple-600 rounded-xl flex items-center justify-center transition-all duration-200 group"
               >
                 <Instagram className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
+              </a>
+              <a
+                href="https://www.tiktok.com/@esgymfitness"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 bg-gray-800 hover:bg-black rounded-xl flex items-center justify-center transition-all duration-200 group"
+              >
+                <TikTokIcon className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
               </a>
               <a
                 href="https://wa.me/905064668981"
@@ -151,7 +171,7 @@ export default function Footer() {
               {packageLinks.map((label) => (
                 <li key={label}>
                   <a
-                    href="#packages"
+                    href="/packages"
                     className="text-gray-400 hover:text-[#FFC107] text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <ArrowRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
@@ -167,8 +187,8 @@ export default function Footer() {
             <h4 className="text-white font-black text-sm uppercase tracking-widest mb-5">Çalışma Saatleri</h4>
             <div className="flex flex-col gap-2.5 mb-6">
               {[
-                { day: "Pazartesi – Cuma", hours: "10:00 – 22:00", open: true },
-                { day: "Cumartesi", hours: "10:00 – 22:00", open: true },
+                { day: "Pazartesi – Cuma", hours: "09:00 – 23:00", open: true },
+                { day: "Cumartesi", hours: "09:00 – 20:00", open: true },
                 { day: "Pazar", hours: "Kapalı", open: false },
               ].map(({ day, hours, open }) => (
                 <div key={day} className="flex items-center justify-between">

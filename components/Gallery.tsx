@@ -19,8 +19,7 @@ export default function Gallery() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section id="gallery" className="py-24 lg:py-32 bg-white relative overflow-hidden">
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#FFF8E1] rounded-full blur-[120px]" />
+    <section id="gallery" className="py-24 lg:py-32 bg-zinc-950 relative overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -32,15 +31,15 @@ export default function Gallery() {
           className="mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6"
         >
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#FFF8E1] border border-[#FFC107]/30 rounded-full px-4 py-1.5 mb-4">
+            <div className="inline-flex items-center gap-2 bg-[#FFC107]/15 border border-[#FFC107]/25 rounded-full px-4 py-1.5 mb-4">
               <Camera className="w-3.5 h-3.5 text-[#FFC107]" />
-              <span className="text-[#B8860B] text-xs font-semibold uppercase tracking-widest">Galeri</span>
+              <span className="text-[#FFC107] text-xs font-semibold uppercase tracking-widest">Galeri</span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black text-gray-900 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-black text-white leading-tight">
               Sınırlarını Zorlayacağın{" "}
               <span className="text-[#FFC107]">Alanı Keşfet.</span>
             </h2>
-            <p className="text-gray-500 text-lg mt-4 max-w-xl">
+            <p className="text-zinc-400 text-lg mt-4 max-w-xl">
               Modern tasarım, premium ekipman ve enerjik atmosfer — hepsi bir arada.
             </p>
           </div>
@@ -48,7 +47,7 @@ export default function Gallery() {
             href="https://www.instagram.com/esgymfitness"
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 flex items-center gap-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 text-sm font-semibold px-5 py-3 rounded-xl transition-all duration-200 whitespace-nowrap"
+            className="shrink-0 flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 text-sm font-semibold px-5 py-3 rounded-xl transition-all duration-200 whitespace-nowrap"
           >
             <span className="text-base">📸</span>
             @esgymfitness&apos;ta Daha Fazlası
@@ -69,11 +68,11 @@ export default function Gallery() {
               onMouseLeave={() => setHovered(null)}
             >
               <div
-                className={`relative group rounded-2xl overflow-hidden bg-gradient-to-br ${photo.bg} border border-gray-100 hover:border-[#FFC107]/40 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md ${
+                className={`relative group rounded-2xl overflow-hidden bg-gradient-to-br ${photo.bg} border border-zinc-800 hover:border-[#FFC107]/50 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl hover:shadow-[#FFC107]/10 ${
                   photo.aspect === "tall" ? "h-64 sm:h-80" : photo.aspect === "wide" ? "h-36 sm:h-44" : "h-44 sm:h-52"
                 }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10" />
 
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className={`text-5xl transition-all duration-300 ${hovered === photo.id ? "scale-110" : "scale-100"}`}>
@@ -86,8 +85,8 @@ export default function Gallery() {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-3">
-                  <p className="text-gray-800 text-xs font-bold leading-tight">{photo.label}</p>
-                  <p className="text-gray-500 text-[10px] mt-0.5">{photo.category}</p>
+                  <p className="text-gray-900 text-xs font-bold leading-tight">{photo.label}</p>
+                  <p className="text-gray-600 text-[10px] mt-0.5">{photo.category}</p>
                 </div>
               </div>
             </motion.div>
@@ -101,7 +100,7 @@ export default function Gallery() {
           transition={{ duration: 0.6 }}
           className="mt-12 text-center"
         >
-          <p className="text-gray-400 text-sm">
+          <p className="text-zinc-500 text-sm">
             Daha fazla fotoğraf ve video için{" "}
             <a href="https://www.instagram.com/esgymfitness" target="_blank" rel="noopener noreferrer" className="text-[#FFC107] hover:underline font-semibold">
               @esgymfitness

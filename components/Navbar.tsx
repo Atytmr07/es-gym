@@ -5,10 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Menu, X, Dumbbell } from "lucide-react";
 
 const links = [
-  { label: "Yaşam Alanı", href: "#lifestyle" },
-  { label: "Galeri", href: "#gallery" },
-  { label: "Paketler", href: "#packages" },
-  { label: "İletişim", href: "#contact" },
+  { label: "Yaşam Alanı", href: "/#lifestyle" },
+  { label: "Galeri", href: "/#gallery" },
+  { label: "Paketler", href: "/packages" },
+  { label: "İletişim", href: "/#contact" },
 ];
 
 export default function Navbar() {
@@ -35,7 +35,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
+          <a href="/" className="flex items-center gap-2 group">
             <div className="w-9 h-9 bg-[#FFC107] rounded-xl flex items-center justify-center shadow-sm">
               <Dumbbell className="w-5 h-5 text-white" />
             </div>
@@ -63,11 +63,12 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="#packages"
-              className="flex items-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-[#FFC107]/30 active:scale-95"
+              href="/packages"
+              className="relative flex items-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-gray-900 font-black text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-[#FFC107]/30 hover:shadow-xl hover:shadow-[#FFC107]/40 active:scale-95"
             >
               <Lock className="w-3.5 h-3.5" />
               Online Üye Ol
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white animate-pulse" />
             </a>
           </div>
 
@@ -103,9 +104,9 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href="#packages"
+                href="/packages"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 bg-[#FFC107] text-white font-bold text-sm px-5 py-3 rounded-xl mt-2"
+                className="flex items-center justify-center gap-2 bg-[#FFC107] text-gray-900 font-black text-sm px-5 py-3.5 rounded-xl mt-2 shadow-md shadow-[#FFC107]/30"
               >
                 <Lock className="w-3.5 h-3.5" />
                 Online Üye Ol

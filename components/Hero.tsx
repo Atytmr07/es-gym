@@ -73,7 +73,7 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4"
           >
             <a
-              href="#packages"
+              href="/packages"
               className="group flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-white font-black text-base px-8 py-4 rounded-2xl transition-all duration-200 hover:shadow-2xl hover:shadow-[#FFC107]/40 active:scale-95"
             >
               Paketleri İncele
@@ -99,7 +99,7 @@ export default function Hero() {
           >
             {[
               { value: "5+", label: "Uzman Program" },
-              { value: "10-22", label: "Çalışma Saati" },
+              { value: "09-23", label: "Çalışma Saati" },
               { value: "Profesyonel", label: "Personal Trainer" },
               { value: "5.0 ⭐", label: "Üye Memnuniyeti" },
             ].map((stat) => (

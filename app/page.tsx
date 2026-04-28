@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import LifestyleZone from "@/components/LifestyleZone";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
-import Packages from "@/components/Packages";
 import BMICalculator from "@/components/BMICalculator";
 import ContactLocation from "@/components/ContactLocation";
 import Footer from "@/components/Footer";
@@ -17,7 +16,6 @@ export default function Home() {
       <LifestyleZone />
       <Gallery />
       <Testimonials />
-      <Packages />
       <BMICalculator />
       <ContactLocation />
       <Footer />

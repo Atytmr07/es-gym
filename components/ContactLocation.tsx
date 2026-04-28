@@ -3,7 +3,15 @@
 import { motion } from "framer-motion";
 import { MapPin, Phone, AtSign as Instagram, MessageCircle, Clock, Navigation } from "lucide-react";
 
-const instagramPosts = [
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.78a4.85 4.85 0 0 1-1.01-.09z" />
+    </svg>
+  );
+}
+
+const socialPosts = [
   { id: 1, icon: "🥊", label: "Boks seansı" },
   { id: 2, icon: "🏋️", label: "Ağırlık antrenmanı" },
   { id: 3, icon: "💪", label: "PT seansı" },
@@ -15,8 +23,8 @@ const instagramPosts = [
 export default function ContactLocation() {
   return (
     <section id="contact" className="py-24 lg:py-32 bg-white relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-64 h-64 bg-[#FFF8E1] rounded-full blur-[100px]" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#FFF8E1] rounded-full blur-[100px]" />
+      <div className="absolute top-0 left-0 w-64 h-64 bg-[#FFF8E1] rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#FFF8E1] rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -77,7 +85,8 @@ export default function ContactLocation() {
                   </div>
                   <div>
                     <p className="text-gray-400 text-xs uppercase tracking-widest mb-1">Çalışma Saatleri</p>
-                    <p className="text-gray-800 font-semibold text-sm">Pzt – Cmt: 10:00 – 22:00</p>
+                    <p className="text-gray-800 font-semibold text-sm">Pzt – Cum: 09:00 – 23:00</p>
+                    <p className="text-gray-700 text-sm">Cmt: 09:00 – 20:00</p>
                     <p className="text-red-400 text-sm font-medium">Pazar: Kapalı</p>
                   </div>
                 </div>
@@ -93,24 +102,47 @@ export default function ContactLocation() {
               </a>
             </div>
 
-            {/* Instagram block */}
+            {/* Social block — Instagram + TikTok */}
             <div className="bg-white border border-gray-100 rounded-2xl p-7 shadow-sm">
               <div className="flex items-center justify-between mb-5">
+                <h3 className="text-gray-900 font-black text-base">Sosyal Medya</h3>
+              </div>
+
+              {/* Instagram */}
+              <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 rounded-xl hover:bg-[#FFF8E1] transition-colors group">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <Instagram className="w-5 h-5 text-white" />
+                  <div className="w-9 h-9 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <Instagram className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <p className="text-gray-900 font-black text-sm">@esgymfitness</p>
-                    <p className="text-gray-400 text-xs">Bizi Takip Edin</p>
+                    <p className="text-gray-400 text-xs">Instagram</p>
                   </div>
                 </div>
                 <a href="https://www.instagram.com/esgymfitness" target="_blank" rel="noopener noreferrer" className="text-[#FFC107] text-xs font-semibold hover:underline">
                   Takip Et →
                 </a>
               </div>
+
+              {/* TikTok */}
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-black/5 transition-colors group mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 bg-black rounded-xl flex items-center justify-center">
+                    <TikTokIcon className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-gray-900 font-black text-sm">@esgymfitness</p>
+                    <p className="text-gray-400 text-xs">TikTok</p>
+                  </div>
+                </div>
+                <a href="https://www.tiktok.com/@esgymfitness" target="_blank" rel="noopener noreferrer" className="text-gray-700 text-xs font-semibold hover:underline">
+                  Takip Et →
+                </a>
+              </div>
+
+              {/* Post grid */}
               <div className="grid grid-cols-3 gap-2">
-                {instagramPosts.map((post) => (
+                {socialPosts.map((post) => (
                   <div
                     key={post.id}
                     className="aspect-square bg-gray-50 hover:bg-[#FFF8E1] border border-gray-100 hover:border-[#FFC107]/30 rounded-xl flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-200 hover:scale-105 group"
@@ -123,7 +155,7 @@ export default function ContactLocation() {
             </div>
           </motion.div>
 
-          {/* Right: Real Google Maps */}
+          {/* Right: Google Maps */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}

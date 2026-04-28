@@ -17,7 +17,7 @@ const testimonials = [
   {
     id: 2,
     name: "Mehmet A.",
-    role: "Premium PT Üyesi · 1 Yıl",
+    role: "Personal Training · 1 Yıl",
     avatar: "MA",
     color: "from-blue-400 to-indigo-500",
     rating: 5,
@@ -35,7 +35,7 @@ const testimonials = [
   {
     id: 4,
     name: "Can B.",
-    role: "Standart GYM · 2 Yıl",
+    role: "GYM Üyesi · 2 Yıl",
     avatar: "CB",
     color: "from-green-400 to-emerald-500",
     rating: 5,
@@ -44,7 +44,7 @@ const testimonials = [
   {
     id: 5,
     name: "Zeynep M.",
-    role: "Çocuk Gelişim Programı",
+    role: "Çocuk Hareket Gelişim Programı",
     avatar: "ZM",
     color: "from-purple-400 to-violet-500",
     rating: 5,
@@ -53,7 +53,7 @@ const testimonials = [
   {
     id: 6,
     name: "Burak S.",
-    role: "Premium PT Üyesi · 9 Ay",
+    role: "Personal Training · 9 Ay",
     avatar: "BS",
     color: "from-red-400 to-rose-500",
     rating: 5,
@@ -70,21 +70,16 @@ export default function Testimonials() {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-
     const speed = 0.5;
-
     const animate = () => {
       if (!isPaused) {
         posRef.current -= speed;
         const half = track.scrollWidth / 2;
-        if (Math.abs(posRef.current) >= half) {
-          posRef.current = 0;
-        }
+        if (Math.abs(posRef.current) >= half) posRef.current = 0;
         track.style.transform = `translateX(${posRef.current}px)`;
       }
       animRef.current = requestAnimationFrame(animate);
     };
-
     animRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animRef.current);
   }, [isPaused]);
@@ -92,8 +87,7 @@ export default function Testimonials() {
   const doubled = [...testimonials, ...testimonials];
 
   return (
-    <section id="testimonials" className="py-24 lg:py-32 bg-gray-50 overflow-hidden relative">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#FFF8E1] rounded-full blur-[120px]" />
+    <section id="testimonials" className="py-24 lg:py-32 bg-zinc-900 overflow-hidden relative">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
         <motion.div
@@ -103,24 +97,23 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <div className="inline-flex items-center gap-2 bg-[#FFF8E1] border border-[#FFC107]/30 rounded-full px-4 py-1.5 mb-4">
+          <div className="inline-flex items-center gap-2 bg-[#FFC107]/15 border border-[#FFC107]/25 rounded-full px-4 py-1.5 mb-4">
             <Star className="w-3.5 h-3.5 text-[#FFC107] fill-[#FFC107]" />
-            <span className="text-[#B8860B] text-xs font-semibold uppercase tracking-widest">Üye Yorumları</span>
+            <span className="text-[#FFC107] text-xs font-semibold uppercase tracking-widest">Üye Yorumları</span>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-4">
+          <h2 className="text-4xl lg:text-5xl font-black text-white leading-tight mb-4">
             Onlar Geldi,{" "}
             <span className="text-[#FFC107]">Gördü, İkna Oldu.</span>
           </h2>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">
+          <p className="text-zinc-400 text-lg max-w-xl mx-auto">
             Önyargıyla gelen, hayran kalarak çıkan üyelerimizin gerçek deneyimleri.
           </p>
-          {/* Stars summary */}
           <div className="flex items-center justify-center gap-2 mt-4">
             {[1,2,3,4,5].map(i => (
               <Star key={i} className="w-5 h-5 text-[#FFC107] fill-[#FFC107]" />
             ))}
-            <span className="text-gray-900 font-black ml-1">5.0</span>
-            <span className="text-gray-400 text-sm">· 100+ değerlendirme</span>
+            <span className="text-white font-black ml-1">5.0</span>
+            <span className="text-zinc-500 text-sm">· 100+ değerlendirme</span>
           </div>
         </motion.div>
       </div>
@@ -131,38 +124,30 @@ export default function Testimonials() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-zinc-900 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-zinc-900 to-transparent z-10 pointer-events-none" />
 
         <div className="overflow-hidden">
           <div ref={trackRef} className="flex gap-5 w-max">
             {doubled.map((t, i) => (
               <div
                 key={`${t.id}-${i}`}
-                className="w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-default"
+                className="w-80 shrink-0 bg-zinc-800 border border-zinc-700 rounded-2xl p-6 hover:border-zinc-600 transition-all duration-300 cursor-default"
               >
-                {/* Quote icon */}
                 <Quote className="w-6 h-6 text-[#FFC107] mb-4 opacity-60" />
-
-                {/* Stars */}
                 <div className="flex gap-1 mb-3">
                   {[1,2,3,4,5].map(s => (
                     <Star key={s} className="w-3.5 h-3.5 text-[#FFC107] fill-[#FFC107]" />
                   ))}
                 </div>
-
-                {/* Text */}
-                <p className="text-gray-600 text-sm leading-relaxed mb-5">&ldquo;{t.text}&rdquo;</p>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                <p className="text-zinc-300 text-sm leading-relaxed mb-5">&ldquo;{t.text}&rdquo;</p>
+                <div className="flex items-center gap-3 pt-4 border-t border-zinc-700">
                   <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${t.color} flex items-center justify-center text-white text-xs font-black shrink-0`}>
                     {t.avatar}
                   </div>
                   <div>
-                    <p className="text-gray-900 font-bold text-sm">{t.name}</p>
-                    <p className="text-gray-400 text-xs">{t.role}</p>
+                    <p className="text-white font-bold text-sm">{t.name}</p>
+                    <p className="text-zinc-500 text-xs">{t.role}</p>
                   </div>
                 </div>
               </div>
@@ -180,11 +165,11 @@ export default function Testimonials() {
         className="text-center mt-12"
       >
         <a
-          href="#packages"
-          className="inline-flex items-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-white font-black text-sm px-8 py-3.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-[#FFC107]/25 active:scale-95"
+          href="/packages"
+          className="inline-flex items-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-gray-900 font-black text-sm px-8 py-3.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-[#FFC107]/25 active:scale-95"
         >
           Sen de Katıl
-          <Star className="w-4 h-4 fill-white" />
+          <Star className="w-4 h-4 fill-gray-900" />
         </a>
       </motion.div>
     </section>
