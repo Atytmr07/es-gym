@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Lock, CheckCircle2, Zap, Dumbbell, Heart,
-  Baby, Sparkles, MessageCircle, Users, Phone,
+  Baby, Sparkles, MessageCircle, Users, Phone, Flame,
 } from "lucide-react";
 
 type Variant = "dark" | "light" | "gold";
@@ -143,7 +143,7 @@ export default function Packages() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
             {/* ── GYM ── */}
             <motion.div
@@ -291,6 +291,51 @@ export default function Packages() {
                   className="mt-auto pt-7 w-full flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-gray-900 font-black text-sm py-3.5 rounded-xl transition-all duration-200 active:scale-95"
                 >
                   <Lock className="w-3.5 h-3.5" />
+                  Hemen Başla
+                </a>
+              </div>
+            </motion.div>
+
+            {/* ── KİCKBOKS ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: 0.3 }}
+              className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-7 flex flex-col group hover:border-orange-500/30 transition-all duration-300 overflow-hidden"
+            >
+              <div className="absolute -top-10 -right-10 w-44 h-44 bg-orange-500/5 rounded-full blur-2xl group-hover:bg-orange-500/10 transition-all duration-500 pointer-events-none" />
+              <div className="relative z-10 flex flex-col flex-1">
+                <div className="w-12 h-12 bg-orange-500/15 rounded-2xl flex items-center justify-center mb-5">
+                  <Flame className="w-6 h-6 text-orange-400" />
+                </div>
+                <h3 className="text-2xl font-black text-white mb-1">Kickboks</h3>
+                <p className="text-zinc-500 text-sm mb-7">Haftada 3 gün · Grup dersi</p>
+
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-4xl font-black text-white">₺2.500</span>
+                    <span className="text-zinc-500 text-sm">/ ay</span>
+                  </div>
+                </div>
+
+                <div className="my-7 border-t border-zinc-800" />
+
+                <DarkFeatures items={[
+                  "Haftada 3 gün antrenman",
+                  "Boks & tekme kombinasyonları",
+                  "Sertifikalı antrenör eşliğinde",
+                  "Kondisyon & refleks geliştirme",
+                  "GYM alanına ücretsiz erişim",
+                ]} />
+
+                <a
+                  href="https://wa.me/905064668981"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto pt-7 w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-400 text-white font-black text-sm py-3.5 rounded-xl transition-all duration-200 active:scale-95"
+                >
+                  <Flame className="w-3.5 h-3.5" />
                   Hemen Başla
                 </a>
               </div>
