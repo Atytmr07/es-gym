@@ -46,7 +46,8 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[0.9] tracking-tight mb-6"
+            className="text-7xl sm:text-8xl lg:text-9xl xl:text-[10rem] text-white leading-[0.88] tracking-widest mb-6 uppercase"
+            style={{ fontFamily: "var(--font-bebas)" }}
           >
             Bir Spor
             <br />
@@ -55,14 +56,14 @@ export default function Hero() {
             Çok Daha Fazlası.
           </motion.h1>
 
-          {/* Subheadline — lokasyon önyargısını kıran mesaj */}
+          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-white/80 text-lg sm:text-xl max-w-2xl leading-relaxed mb-10"
+            className="text-white/70 text-base sm:text-lg max-w-sm leading-relaxed mb-10"
           >
-            Profesyonel ekipman, sertifikalı kadro ve lüks atmosfer — şehrin herhangi bir premium merkezinden farkı olmayan, üstelik gerçek bir topluluk hissi sunan yaşam alanı.
+            Premium ekipman. Uzman kadro. Gerçek bir topluluk.
           </motion.p>
 
           {/* CTAs */}
