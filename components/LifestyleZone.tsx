@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { Dumbbell, Sparkles, Baby, Gamepad2, Star, ArrowUpRight, ShieldCheck, Zap } from "lucide-react";
+import { Dumbbell, Sparkles, Baby, Star, ArrowUpRight, ShieldCheck, Flame } from "lucide-react";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -165,29 +165,29 @@ export default function LifestyleZone() {
             </div>
           </motion.div>
 
-          {/* 5 — BİLARDO & SOSYAL */}
+          {/* 5 — KİCKBOKS */}
           <motion.div
             custom={4} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
             className="md:col-span-2 group relative bg-zinc-900 rounded-3xl p-7 overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl"
           >
-            <span className="absolute -bottom-4 -right-3 text-[80px] select-none leading-none pointer-events-none opacity-10">🎱</span>
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.02] rounded-full blur-2xl pointer-events-none" />
+            <span className="absolute -bottom-4 -right-3 text-[80px] font-black select-none leading-none pointer-events-none opacity-[0.04]">KICK</span>
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 to-transparent pointer-events-none" />
+            <div className="absolute -bottom-4 -right-3 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
             <div className="relative z-10 flex flex-col h-full">
               <div className="flex items-start justify-between mb-4">
-                <div className="w-11 h-11 bg-white/8 rounded-xl flex items-center justify-center group-hover:bg-[#FFC107]/15 transition-all duration-300">
-                  <Gamepad2 className="w-5 h-5 text-zinc-400 group-hover:text-[#FFC107] transition-colors duration-300" />
+                <div className="w-11 h-11 bg-orange-500/15 rounded-xl flex items-center justify-center">
+                  <Flame className="w-5 h-5 text-orange-400" />
                 </div>
-                <span className="flex items-center gap-1.5 text-xs text-zinc-500 bg-white/5 border border-white/10 rounded-full px-3 py-1">
-                  <Zap className="w-3 h-3 text-[#FFC107]" />
-                  Sosyal Alan
-                </span>
+                <span className="text-[10px] font-semibold text-orange-300 bg-orange-500/10 border border-orange-500/20 rounded-full px-2.5 py-1">Combat Sport</span>
               </div>
-              <h3 className="text-xl font-black text-white mb-2">Bilardo & Dart</h3>
+              <h3 className="text-xl font-black text-white mb-2">Kickboks</h3>
               <p className="text-zinc-400 text-sm leading-relaxed flex-1">
-                Antrenman bitti, eğlence bitmedi. Arkadaşlarınla vakit geçir, sosyalleş, dinlen.
+                Hız, güç ve koordinasyon bir arada. Sertifikalı antrenör eşliğinde haftada 3 gün yoğun antrenman.
               </p>
-              <div className="mt-5 pt-4 border-t border-white/5">
-                <p className="text-zinc-600 text-xs">Antrenman saatleri ile birlikte kullanılabilir.</p>
+              <div className="mt-5 flex gap-2">
+                {["Haftada 3 Gün", "Kondisyon", "Savunma"].map(tag => (
+                  <span key={tag} className="text-[10px] font-semibold text-orange-300 bg-orange-500/10 border border-orange-500/20 rounded-full px-2.5 py-1">{tag}</span>
+                ))}
               </div>
             </div>
           </motion.div>

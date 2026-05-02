@@ -200,25 +200,26 @@ export default function Packages() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.1 }}
-              className="relative bg-[#FFC107] rounded-2xl flex flex-col overflow-hidden"
+              className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-7 flex flex-col group hover:border-[#FFC107]/25 transition-all duration-300 overflow-hidden"
             >
-              <div className="bg-gray-900 text-[#FFC107] text-[10px] font-black text-center py-2 uppercase tracking-widest">
-                ⚡ Yeni Nesil Teknoloji
-              </div>
-              <div className="relative z-10 flex flex-col flex-1 p-7">
-                <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-5">
-                  <Zap className="w-6 h-6 text-white fill-white" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#FFC107]/40 to-transparent pointer-events-none" />
+              <div className="absolute -top-10 -right-10 w-44 h-44 bg-[#FFC107]/5 rounded-full blur-2xl group-hover:bg-[#FFC107]/10 transition-all duration-500 pointer-events-none" />
+              <div className="relative z-10 flex flex-col flex-1">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="w-12 h-12 bg-[#FFC107]/15 rounded-2xl flex items-center justify-center">
+                    <Zap className="w-6 h-6 text-[#FFC107] fill-[#FFC107]" />
+                  </div>
+                  <span className="text-[10px] font-black text-[#FFC107] bg-[#FFC107]/10 border border-[#FFC107]/20 rounded-full px-2.5 py-1 uppercase tracking-wide">⚡ Yeni Nesil</span>
                 </div>
                 <h3 className="text-2xl font-black text-white mb-1">EMS Fitness</h3>
-                <p className="text-white/80 text-sm mb-3">Az Zaman, Büyük Değişim!</p>
+                <p className="text-zinc-500 text-sm mb-3">Az Zaman, Büyük Değişim!</p>
                 <div className="flex flex-wrap gap-2 mb-7">
-                  <span className="bg-white/20 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">⚡ 25dk = 3.000 Kal</span>
-                  <span className="bg-white/20 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">🔥 Ayda 4kg Yakım</span>
-                  <span className="bg-white/20 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">📅 Haftada 3 Gün</span>
+                  <span className="bg-[#FFC107]/10 text-[#FFC107] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#FFC107]/15">⚡ 25dk = 3.000 Kal</span>
+                  <span className="bg-[#FFC107]/10 text-[#FFC107] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#FFC107]/15">🔥 Ayda 4kg Yakım</span>
                 </div>
 
                 <TierSelector
-                  variant="gold"
+                  variant="dark"
                   tiers={[
                     { label: "12 Seans", price: "12.000" },
                     { label: "16 Seans", price: "14.000" },
@@ -227,11 +228,11 @@ export default function Packages() {
                   ]}
                 />
 
-                <div className="my-7 border-t border-white/25" />
+                <div className="my-7 border-t border-zinc-800" />
 
-                <LightFeatures gold items={[
+                <DarkFeatures items={[
                   "Haftada 3 gün antrenman",
-                  "EMS teknolojisi tam vücut aktivasyon",
+                  "EMS tam vücut aktivasyon",
                   "Sertifikalı EMS antrenörü",
                   "Kişiye özel program",
                   "Vücut analizi & aylık takip",
@@ -241,7 +242,7 @@ export default function Packages() {
                   href="https://wa.me/905064668981"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto pt-7 w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-black text-sm py-3.5 rounded-xl transition-all duration-200 active:scale-95"
+                  className="mt-auto pt-7 w-full flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFB300] text-gray-900 font-black text-sm py-3.5 rounded-xl transition-all duration-200 active:scale-95"
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
                   Bilgi Al
@@ -255,10 +256,16 @@ export default function Packages() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.2 }}
-              className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-7 flex flex-col group hover:border-[#FFC107]/25 transition-all duration-300 overflow-hidden"
+              className="relative bg-zinc-900 border border-[#FFC107]/40 rounded-2xl p-7 flex flex-col group hover:border-[#FFC107]/70 transition-all duration-300 overflow-hidden ring-1 ring-[#FFC107]/20"
             >
-              <div className="absolute -bottom-10 -left-10 w-44 h-44 bg-[#FFC107]/5 rounded-full blur-2xl group-hover:bg-[#FFC107]/10 transition-all duration-500 pointer-events-none" />
-              <div className="relative z-10 flex flex-col flex-1">
+              {/* Badge */}
+              <div className="absolute -top-px left-1/2 -translate-x-1/2">
+                <span className="bg-[#FFC107] text-gray-900 text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-b-xl shadow-lg shadow-[#FFC107]/30">
+                  ⭐ En Çok Tercih Edilen
+                </span>
+              </div>
+              <div className="absolute -bottom-10 -left-10 w-44 h-44 bg-[#FFC107]/8 rounded-full blur-2xl group-hover:bg-[#FFC107]/15 transition-all duration-500 pointer-events-none" />
+              <div className="relative z-10 flex flex-col flex-1 pt-5">
                 <div className="w-12 h-12 bg-[#FFC107]/15 rounded-2xl flex items-center justify-center mb-5">
                   <Users className="w-6 h-6 text-[#FFC107]" />
                 </div>
