@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Phone, AtSign as Instagram, MessageCircle, Clock, Navigation } from "lucide-react";
+import Image from "next/image";
 
 function TikTokIcon({ className }: { className?: string }) {
   return (
@@ -12,12 +13,12 @@ function TikTokIcon({ className }: { className?: string }) {
 }
 
 const socialPosts = [
-  { id: 1, icon: "🥊", label: "Boks seansı" },
-  { id: 2, icon: "🏋️", label: "Ağırlık antrenmanı" },
-  { id: 3, icon: "💪", label: "PT seansı" },
-  { id: 4, icon: "🧘", label: "Pilates" },
-  { id: 5, icon: "🎱", label: "Sosyal alan" },
-  { id: 6, icon: "🔥", label: "Kardiyo" },
+  { id: 1, src: "/gallery/workout.webp", label: "Antrenman" },
+  { id: 2, src: "/gallery/boxing.webp", label: "Boks" },
+  { id: 3, src: "/gallery/pilates.jpg", label: "Pilates" },
+  { id: 4, src: "/gallery/interior.jpg", label: "GYM" },
+  { id: 5, src: "/gallery/ropes.webp", label: "Fonksiyonel" },
+  { id: 6, src: "/gallery/community.webp", label: "Topluluk" },
 ];
 
 export default function ContactLocation() {
@@ -141,17 +142,30 @@ export default function ContactLocation() {
               </div>
 
               {/* Post grid */}
-              <div className="grid grid-cols-3 gap-2">
+              <a
+                href="https://www.instagram.com/esgymfitness"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="grid grid-cols-3 gap-2"
+              >
                 {socialPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="aspect-square bg-gray-50 hover:bg-[#FFF8E1] border border-gray-100 hover:border-[#FFC107]/30 rounded-xl flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-200 hover:scale-105 group"
+                    className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer"
                   >
-                    <span className="text-2xl group-hover:scale-110 transition-transform duration-200">{post.icon}</span>
-                    <span className="text-gray-400 text-[9px] text-center px-1">{post.label}</span>
+                    <Image
+                      src={post.src}
+                      alt={post.label}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="80px"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                      <span className="text-white text-[9px] font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-center px-1">{post.label}</span>
+                    </div>
                   </div>
                 ))}
-              </div>
+              </a>
             </div>
           </motion.div>
 
