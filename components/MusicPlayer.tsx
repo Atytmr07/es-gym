@@ -1,25 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Play, Pause, ChevronUp, Volume2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const VIDEO_ID = "pEskP0ulPlA";
 
+// Module-level — survives React remounts / navigation
+let ytPlayer: YTPlayer | null = null;
+let ytReady = false;
+let ytPlaying = false;
+let ytVolume = 60;
+let mountedSetters: Array<(s: { ready: boolean; playing: boolean }) => void> = [];
+
+function notifyAll() {
+  mountedSetters.forEach((fn) => fn({ ready: ytReady, playing: ytPlaying }));
+}
+
 declare global {
   interface Window {
     YT: {
-      Player: new (
-        el: HTMLElement,
-        opts: {
-          videoId: string;
-          playerVars: Record<string, number | string>;
-          events: {
-            onReady?: (e: { target: YTPlayer }) => void;
-            onStateChange?: (e: { data: number }) => void;
-          };
-        }
-      ) => YTPlayer;
+      Player: new (el: HTMLElement, opts: object) => YTPlayer;
       PlayerState: { PLAYING: number; PAUSED: number; ENDED: number };
     };
     onYouTubeIframeAPIReady: () => void;
@@ -30,73 +31,88 @@ interface YTPlayer {
   playVideo(): void;
   pauseVideo(): void;
   setVolume(v: number): void;
-  getPlayerState(): number;
-  destroy(): void;
+}
+
+function bootstrapYT() {
+  if (ytPlayer) return; // already created
+
+  // Create a permanent hidden container on body (outside React tree)
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;overflow:hidden;left:-9999px;top:-9999px;";
+  const mount = document.createElement("div");
+  wrap.appendChild(mount);
+  document.body.appendChild(wrap);
+
+  ytPlayer = new window.YT.Player(mount, {
+    videoId: VIDEO_ID,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      loop: 1,
+      playlist: VIDEO_ID,
+      modestbranding: 1,
+      rel: 0,
+      playsinline: 1,
+    },
+    events: {
+      onReady: (e: { target: YTPlayer }) => {
+        e.target.setVolume(ytVolume);
+        ytReady = true;
+        notifyAll();
+      },
+      onStateChange: (e: { data: number }) => {
+        ytPlaying = e.data === window.YT.PlayerState.PLAYING;
+        notifyAll();
+      },
+    },
+  } as object);
+}
+
+function loadYTAPI() {
+  if (window.YT?.Player) {
+    bootstrapYT();
+    return;
+  }
+  window.onYouTubeIframeAPIReady = bootstrapYT;
+  if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
 }
 
 export default function MusicPlayer() {
-  const playerRef = useRef<YTPlayer | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(60);
+  const [state, setState] = useState({ ready: ytReady, playing: ytPlaying });
+  const [volume, setVolume] = useState(ytVolume);
   const [showVolume, setShowVolume] = useState(false);
 
-  const initPlayer = useCallback(() => {
-    if (!containerRef.current || playerRef.current) return;
-    playerRef.current = new window.YT.Player(containerRef.current, {
-      videoId: VIDEO_ID,
-      playerVars: {
-        autoplay: 0,
-        controls: 0,
-        loop: 1,
-        playlist: VIDEO_ID,
-        modestbranding: 1,
-        rel: 0,
-        playsinline: 1,
-      },
-      events: {
-        onReady: (e) => {
-          e.target.setVolume(60);
-          setReady(true);
-        },
-        onStateChange: (e) => {
-          setPlaying(e.data === window.YT.PlayerState.PLAYING);
-        },
-      },
-    });
+  useEffect(() => {
+    // Register this instance's setter
+    mountedSetters.push(setState);
+    // Bootstrap only once
+    loadYTAPI();
+    // Sync current state immediately (in case already ready after navigation)
+    setState({ ready: ytReady, playing: ytPlaying });
+
+    return () => {
+      mountedSetters = mountedSetters.filter((fn) => fn !== setState);
+    };
   }, []);
 
-  useEffect(() => {
-    if (window.YT?.Player) {
-      initPlayer();
-      return;
-    }
-    window.onYouTubeIframeAPIReady = initPlayer;
-    if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-    }
-    return () => {
-      playerRef.current?.destroy();
-      playerRef.current = null;
-    };
-  }, [initPlayer]);
-
-  const toggle = () => {
-    if (!ready || !playerRef.current) return;
-    if (playing) {
-      playerRef.current.pauseVideo();
+  const toggle = useCallback(() => {
+    if (!ytReady || !ytPlayer) return;
+    if (ytPlaying) {
+      ytPlayer.pauseVideo();
     } else {
-      playerRef.current.playVideo();
+      ytPlayer.playVideo();
     }
-  };
+  }, []);
 
-  const handleVolume = (v: number) => {
+  const handleVolume = useCallback((v: number) => {
+    ytVolume = v;
     setVolume(v);
-    playerRef.current?.setVolume(v);
-  };
+    ytPlayer?.setVolume(v);
+  }, []);
 
   return (
     <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-2">
@@ -144,10 +160,10 @@ export default function MusicPlayer() {
         {/* Play / Pause */}
         <button
           onClick={toggle}
-          disabled={!ready}
+          disabled={!state.ready}
           className="w-11 h-11 bg-zinc-900/95 backdrop-blur-sm border border-zinc-700/60 rounded-full flex items-center justify-center hover:border-[#FFC107]/50 transition-all duration-200 shadow-lg disabled:opacity-40 group"
         >
-          {playing ? (
+          {state.playing ? (
             <Pause className="w-4 h-4 text-[#FFC107]" />
           ) : (
             <Play className="w-4 h-4 text-zinc-300 group-hover:text-[#FFC107] transition-colors ml-0.5" />
@@ -156,7 +172,7 @@ export default function MusicPlayer() {
 
         {/* Label */}
         <AnimatePresence>
-          {playing && (
+          {state.playing && (
             <motion.div
               initial={{ opacity: 0, x: -6, width: 0 }}
               animate={{ opacity: 1, x: 0, width: "auto" }}
@@ -187,11 +203,6 @@ export default function MusicPlayer() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Hidden YouTube iframe mount point */}
-      <div className="absolute opacity-0 pointer-events-none w-px h-px overflow-hidden">
-        <div ref={containerRef} />
       </div>
     </div>
   );
