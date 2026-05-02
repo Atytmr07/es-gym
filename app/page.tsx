@@ -7,6 +7,7 @@ import BMICalculator from "@/components/BMICalculator";
 import ContactLocation from "@/components/ContactLocation";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import MusicPlayer from "@/components/MusicPlayer";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <ContactLocation />
       <Footer />
       <WhatsAppWidget />
+      <MusicPlayer />
     </main>
   );
 }
