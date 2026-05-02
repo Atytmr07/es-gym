@@ -42,23 +42,30 @@ const photos = [
   },
   {
     id: 6,
-    src: "/gallery/exterior.jpg",
+    src: "/gallery/exterior.webp",
     label: "E&S GYM",
     category: "Fitness Center",
     span: "col-span-1 row-span-1",
   },
   {
     id: 7,
-    src: "/gallery/interior.jpg",
+    src: "/gallery/interior.webp",
     label: "GYM Atmosferi",
     category: "Premium Ekipman",
     span: "col-span-1 row-span-1",
   },
   {
     id: 8,
-    src: "/gallery/ems-device.jpg",
+    src: "/gallery/ems-device.webp",
     label: "EMS Fitness",
     category: "Yeni Nesil Teknoloji",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    id: 9,
+    src: "/gallery/workout.webp",
+    label: "Güç Antrenmanı",
+    category: "Premium GYM",
     span: "col-span-1 row-span-1",
   },
 ];
@@ -263,7 +270,7 @@ export default function Gallery() {
             className="relative rounded-2xl overflow-hidden group"
           >
             <Image
-              src="/gallery/ems-device.jpg"
+              src="/gallery/ems-device.webp"
               alt="EMS Fitness Teknolojisi"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -273,6 +280,28 @@ export default function Gallery() {
             <div className="absolute bottom-4 left-4">
               <p className="text-white font-black text-sm">EMS Fitness</p>
               <p className="text-white/60 text-xs">Yeni Nesil Teknoloji</p>
+            </div>
+          </motion.div>
+
+          {/* Photo 9 — Workout */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.56 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/workout.webp"
+              alt="Güç Antrenmanı"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">Güç Antrenmanı</p>
+              <p className="text-white/60 text-xs">Premium GYM</p>
             </div>
           </motion.div>
 
