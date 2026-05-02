@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   description:
     "Kepez'in kalbinde premium spor, pilates, boks ve sosyal yaşam alanı. Online üyelik satışı, 3D Secure güvenli ödeme.",
   keywords: "gym, spor salonu, kepez, antalya, pilates, boks, personal trainer, üyelik",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
