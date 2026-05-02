@@ -40,6 +40,27 @@ const photos = [
     category: "E&S GYM Ailesi",
     span: "col-span-1 row-span-1",
   },
+  {
+    id: 6,
+    src: "/gallery/exterior.jpg",
+    label: "E&S GYM",
+    category: "Fitness Center",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    id: 7,
+    src: "/gallery/interior.jpg",
+    label: "GYM Atmosferi",
+    category: "Premium Ekipman",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    id: 8,
+    src: "/gallery/ems-device.jpg",
+    label: "EMS Fitness",
+    category: "Yeni Nesil Teknoloji",
+    span: "col-span-1 row-span-1",
+  },
 ];
 
 export default function Gallery() {
@@ -77,7 +98,7 @@ export default function Gallery() {
         </motion.div>
 
         {/* Photo Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[260px] lg:auto-rows-[300px]">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[200px] lg:auto-rows-[260px]">
 
           {/* Photo 1 — Pilates, tall (spans 2 rows) */}
           <motion.div
@@ -186,6 +207,72 @@ export default function Gallery() {
             <div className="absolute bottom-4 left-4">
               <p className="text-white font-black text-sm">Topluluk Ruhu</p>
               <p className="text-white/60 text-xs">E&S GYM Ailesi</p>
+            </div>
+          </motion.div>
+
+          {/* Photo 6 — Exterior */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.35 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/exterior.jpg"
+              alt="E&S GYM Fitness Center"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">E&S GYM</p>
+              <p className="text-white/60 text-xs">Fitness Center</p>
+            </div>
+          </motion.div>
+
+          {/* Photo 7 — Interior */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.42 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/interior.jpg"
+              alt="GYM Atmosferi"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">GYM Atmosferi</p>
+              <p className="text-white/60 text-xs">Premium Ekipman</p>
+            </div>
+          </motion.div>
+
+          {/* Photo 8 — EMS Device */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.49 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/ems-device.jpg"
+              alt="EMS Fitness Teknolojisi"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">EMS Fitness</p>
+              <p className="text-white/60 text-xs">Yeni Nesil Teknoloji</p>
             </div>
           </motion.div>
 
