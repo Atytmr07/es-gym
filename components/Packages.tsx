@@ -317,16 +317,32 @@ export default function Packages() {
                   <Flame className="w-6 h-6 text-orange-400" />
                 </div>
                 <h3 className="text-2xl font-black text-white mb-1">Kickboks</h3>
-                <p className="text-zinc-500 text-sm mb-7">Haftada 3 gün · Grup dersi</p>
+                <p className="text-zinc-500 text-sm mb-5">Pzt · Çar · Cum · Grup Dersi</p>
 
-                <div>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-4xl font-black text-white">₺2.500</span>
-                    <span className="text-zinc-500 text-sm">/ ay</span>
+                {/* Gruplar */}
+                <div className="flex flex-col gap-3 mb-6">
+                  <div className="bg-zinc-800/80 border border-zinc-700/50 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                      <p className="text-white font-black text-sm">Çocuk Grubu</p>
+                      <p className="text-zinc-500 text-xs mt-0.5">Pzt · Çar · Cum</p>
+                    </div>
+                    <span className="text-orange-400 font-black text-sm bg-orange-500/10 border border-orange-500/20 rounded-lg px-2.5 py-1">19:30</span>
+                  </div>
+                  <div className="bg-zinc-800/80 border border-zinc-700/50 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                      <p className="text-white font-black text-sm">Yetişkin Grubu</p>
+                      <p className="text-zinc-500 text-xs mt-0.5">Pzt · Çar · Cum</p>
+                    </div>
+                    <span className="text-orange-400 font-black text-sm bg-orange-500/10 border border-orange-500/20 rounded-lg px-2.5 py-1">20:30</span>
                   </div>
                 </div>
 
-                <div className="my-7 border-t border-zinc-800" />
+                <div className="flex items-baseline gap-1.5 mb-7">
+                  <span className="text-4xl font-black text-white">₺2.500</span>
+                  <span className="text-zinc-500 text-sm">/ ay</span>
+                </div>
+
+                <div className="mb-7 border-t border-zinc-800" />
 
                 <DarkFeatures items={[
                   "Haftada 3 gün antrenman",

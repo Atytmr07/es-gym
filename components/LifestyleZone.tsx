@@ -181,11 +181,21 @@ export default function LifestyleZone() {
                 <span className="text-[10px] font-semibold text-orange-300 bg-orange-500/10 border border-orange-500/20 rounded-full px-2.5 py-1">Combat Sport</span>
               </div>
               <h3 className="text-xl font-black text-white mb-2">Kickboks</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed flex-1">
-                Hız, güç ve koordinasyon bir arada. Sertifikalı antrenör eşliğinde haftada 3 gün yoğun antrenman.
+              <p className="text-zinc-400 text-sm leading-relaxed mb-4">
+                Hız, güç ve koordinasyon bir arada. Çocuk ve yetişkin gruplarıyla haftada 3 gün yoğun antrenman.
               </p>
-              <div className="mt-5 flex gap-2">
-                {["Haftada 3 Gün", "Kondisyon", "Savunma"].map(tag => (
+              <div className="flex flex-col gap-2 flex-1">
+                <div className="flex items-center justify-between bg-white/5 rounded-xl px-3 py-2">
+                  <span className="text-zinc-300 text-xs font-bold">Çocuk Grubu</span>
+                  <span className="text-orange-400 text-xs font-black">Pzt·Çar·Cum 19:30</span>
+                </div>
+                <div className="flex items-center justify-between bg-white/5 rounded-xl px-3 py-2">
+                  <span className="text-zinc-300 text-xs font-bold">Yetişkin Grubu</span>
+                  <span className="text-orange-400 text-xs font-black">Pzt·Çar·Cum 20:30</span>
+                </div>
+              </div>
+              <div className="mt-4 flex gap-2">
+                {["Combat Sport", "Kondisyon", "Savunma"].map(tag => (
                   <span key={tag} className="text-[10px] font-semibold text-orange-300 bg-orange-500/10 border border-orange-500/20 rounded-full px-2.5 py-1">{tag}</span>
                 ))}
               </div>
