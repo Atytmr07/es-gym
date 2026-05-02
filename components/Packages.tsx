@@ -259,8 +259,8 @@ export default function Packages() {
               className="relative bg-zinc-900 border border-[#FFC107]/40 rounded-2xl p-7 flex flex-col group hover:border-[#FFC107]/70 transition-all duration-300 overflow-hidden ring-1 ring-[#FFC107]/20"
             >
               {/* Badge */}
-              <div className="absolute -top-px left-1/2 -translate-x-1/2">
-                <span className="bg-[#FFC107] text-gray-900 text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-b-xl shadow-lg shadow-[#FFC107]/30">
+              <div className="absolute -top-px left-1/2 -translate-x-1/2 whitespace-nowrap">
+                <span className="bg-[#FFC107] text-gray-900 text-[10px] font-black uppercase tracking-wider px-4 py-1 rounded-b-xl shadow-lg shadow-[#FFC107]/30 whitespace-nowrap">
                   ⭐ En Çok Tercih Edilen
                 </span>
               </div>
