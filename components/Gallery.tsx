@@ -1,23 +1,48 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Camera, ZoomIn } from "lucide-react";
-import { useState } from "react";
+import { Camera } from "lucide-react";
+import Image from "next/image";
 
 const photos = [
-  { id: 1, label: "Premium Ekipman Alanı", category: "Gym Floor",    bg: "from-amber-50 to-orange-100",   icon: "🏋️", aspect: "tall" },
-  { id: 2, label: "Boks Ringi",            category: "Combat",        bg: "from-yellow-50 to-amber-100",   icon: "🥊", aspect: "short" },
-  { id: 3, label: "Personal Training",     category: "PT Session",    bg: "from-orange-50 to-yellow-100",  icon: "💪", aspect: "short" },
-  { id: 4, label: "Kardio Bölümü",         category: "Cardio",        bg: "from-amber-50 to-yellow-100",   icon: "🏃", aspect: "tall" },
-  { id: 5, label: "Sosyal Lounge",         category: "Lounge",        bg: "from-yellow-50 to-orange-50",   icon: "🎱", aspect: "wide" },
-  { id: 6, label: "Pilates Stüdyo",        category: "Pilates",       bg: "from-pink-50 to-rose-100",      icon: "🧘", aspect: "short" },
-  { id: 7, label: "Çocuk Bölümü",          category: "Kids Zone",     bg: "from-sky-50 to-blue-100",       icon: "⭐", aspect: "short" },
-  { id: 8, label: "Güç Bölümü",            category: "Strength",      bg: "from-amber-100 to-orange-100",  icon: "🔥", aspect: "tall" },
+  {
+    id: 1,
+    src: "/gallery/pilates.jpg",
+    label: "Reformer Pilates",
+    category: "Pilates Stüdyo",
+    span: "col-span-1 row-span-2",
+  },
+  {
+    id: 2,
+    src: "/gallery/gym.jpg",
+    label: "Premium GYM",
+    category: "Ağırlık & Kardio",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    id: 3,
+    src: "/gallery/boxing.jpg",
+    label: "Boks Eğitimi",
+    category: "Combat Sport",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    id: 4,
+    src: "/gallery/ropes.jpg",
+    label: "Battle Ropes",
+    category: "Fonksiyonel Antrenman",
+    span: "col-span-1 row-span-1",
+  },
+  {
+    id: 5,
+    src: "/gallery/community.jpg",
+    label: "Topluluk Ruhu",
+    category: "E&S GYM Ailesi",
+    span: "col-span-1 row-span-1",
+  },
 ];
 
 export default function Gallery() {
-  const [hovered, setHovered] = useState<number | null>(null);
-
   return (
     <section id="gallery" className="py-24 lg:py-32 bg-zinc-950 relative overflow-hidden">
 
@@ -28,7 +53,7 @@ export default function Gallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6"
+          className="mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6"
         >
           <div>
             <div className="inline-flex items-center gap-2 bg-[#FFC107]/15 border border-[#FFC107]/25 rounded-full px-4 py-1.5 mb-4">
@@ -39,9 +64,6 @@ export default function Gallery() {
               Sınırlarını Zorlayacağın{" "}
               <span className="text-[#FFC107]">Alanı Keşfet.</span>
             </h2>
-            <p className="text-zinc-400 text-lg mt-4 max-w-xl">
-              Modern tasarım, premium ekipman ve enerjik atmosfer — hepsi bir arada.
-            </p>
           </div>
           <a
             href="https://www.instagram.com/esgymfitness"
@@ -54,43 +76,119 @@ export default function Gallery() {
           </a>
         </motion.div>
 
-        {/* Masonry Grid */}
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
-          {photos.map((photo, i) => (
-            <motion.div
-              key={photo.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="break-inside-avoid"
-              onMouseEnter={() => setHovered(photo.id)}
-              onMouseLeave={() => setHovered(null)}
-            >
-              <div
-                className={`relative group rounded-2xl overflow-hidden bg-gradient-to-br ${photo.bg} border border-zinc-800 hover:border-[#FFC107]/50 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl hover:shadow-[#FFC107]/10 ${
-                  photo.aspect === "tall" ? "h-64 sm:h-80" : photo.aspect === "wide" ? "h-36 sm:h-44" : "h-44 sm:h-52"
-                }`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10" />
+        {/* Photo Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[260px] lg:auto-rows-[300px]">
 
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className={`text-5xl transition-all duration-300 ${hovered === photo.id ? "scale-110" : "scale-100"}`}>
-                    {photo.icon}
-                  </span>
-                </div>
+          {/* Photo 1 — Pilates, tall (spans 2 rows) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
+            className="relative rounded-2xl overflow-hidden group row-span-2"
+          >
+            <Image
+              src="/gallery/pilates.jpg"
+              alt="Reformer Pilates"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">Reformer Pilates</p>
+              <p className="text-white/60 text-xs">Pilates Stüdyo</p>
+            </div>
+          </motion.div>
 
-                <div className={`absolute top-3 right-3 z-20 w-8 h-8 bg-[#FFC107] rounded-lg flex items-center justify-center transition-all duration-200 shadow-md ${hovered === photo.id ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}>
-                  <ZoomIn className="w-4 h-4 text-white" />
-                </div>
+          {/* Photo 2 — GYM */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.07 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/gym.jpg"
+              alt="Premium GYM"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">Premium GYM</p>
+              <p className="text-white/60 text-xs">Ağırlık & Kardio</p>
+            </div>
+          </motion.div>
 
-                <div className="absolute bottom-0 left-0 right-0 z-20 p-3">
-                  <p className="text-gray-900 text-xs font-bold leading-tight">{photo.label}</p>
-                  <p className="text-gray-600 text-[10px] mt-0.5">{photo.category}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+          {/* Photo 3 — Boxing */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.14 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/boxing.jpg"
+              alt="Boks Eğitimi"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">Boks Eğitimi</p>
+              <p className="text-white/60 text-xs">Combat Sport</p>
+            </div>
+          </motion.div>
+
+          {/* Photo 4 — Battle Ropes */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.21 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/ropes.jpg"
+              alt="Battle Ropes"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">Battle Ropes</p>
+              <p className="text-white/60 text-xs">Fonksiyonel</p>
+            </div>
+          </motion.div>
+
+          {/* Photo 5 — Community */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.28 }}
+            className="relative rounded-2xl overflow-hidden group"
+          >
+            <Image
+              src="/gallery/community.jpg"
+              alt="Topluluk Ruhu"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white font-black text-sm">Topluluk Ruhu</p>
+              <p className="text-white/60 text-xs">E&S GYM Ailesi</p>
+            </div>
+          </motion.div>
+
         </div>
 
         <motion.div
@@ -98,14 +196,18 @@ export default function Gallery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-12 text-center"
+          className="mt-8 text-center"
         >
           <p className="text-zinc-500 text-sm">
-            Daha fazla fotoğraf ve video için{" "}
+            Daha fazlası için{" "}
             <a href="https://www.instagram.com/esgymfitness" target="_blank" rel="noopener noreferrer" className="text-[#FFC107] hover:underline font-semibold">
               @esgymfitness
             </a>{" "}
-            hesabımızı takip edin.
+            ve{" "}
+            <a href="https://www.tiktok.com/@esgymfitness" target="_blank" rel="noopener noreferrer" className="text-[#FFC107] hover:underline font-semibold">
+              TikTok
+            </a>
+            &apos;umuzu takip edin.
           </p>
         </motion.div>
       </div>
