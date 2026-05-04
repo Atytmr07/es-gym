@@ -214,15 +214,34 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Legal Links */}
         <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2 mb-5">
+            {[
+              { label: "KVKK Aydınlatma Metni", href: "/kvkk" },
+              { label: "Mesafeli Satış Sözleşmesi", href: "/mesafeli-satis" },
+              { label: "İptal & İade Politikası", href: "/iptal-iade" },
+              { label: "Kullanım Koşulları", href: "/kullanim-kosullari" },
+            ].map(({ label, href }) => (
+              <a
+                key={href}
+                href={href}
+                className="text-gray-600 hover:text-gray-400 text-xs transition-colors"
+              >
+                {label}
+              </a>
+            ))}
+          </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-gray-600 text-xs text-center sm:text-left">
-              © {new Date().getFullYear()} E&S GYM Fitness Center. Tüm hakları saklıdır. · Antalya
+              © {new Date().getFullYear()} E&S GYM Fitness Center. Tüm hakları saklıdır. · Kepez, Antalya
             </p>
             <div className="flex items-center gap-4">
-              {["Visa", "Mastercard", "Troy", "iyzico"].map(b => (
-                <span key={b} className="text-gray-700 text-xs">{b}</span>
-              ))}
+              <img
+                src="/iyzico-logo-pack/footer_iyzico_ile_ode/White/logo_band_white.svg"
+                alt="iyzico güvenli ödeme"
+                className="h-6 opacity-40 hover:opacity-70 transition-opacity"
+              />
             </div>
           </div>
         </div>

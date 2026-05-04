@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import MusicPlayer from "@/components/MusicPlayer";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,8 +26,9 @@ export const metadata: Metadata = {
     "Kepez'in kalbinde premium spor, pilates, boks ve sosyal yaşam alanı. Online üyelik satışı, 3D Secure güvenli ödeme.",
   keywords: "gym, spor salonu, kepez, antalya, pilates, boks, personal trainer, üyelik",
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/logo.jpg",
+    apple: "/logo.jpg",
+    shortcut: "/logo.jpg",
   },
 };
 
@@ -41,8 +43,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
-        <MusicPlayer />
+        <AuthProvider>
+          {children}
+          <MusicPlayer />
+        </AuthProvider>
       </body>
     </html>
   );
