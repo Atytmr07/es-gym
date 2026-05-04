@@ -21,7 +21,7 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
 });
 
-const SITE_URL = "https://esgymfitness.com";
+const SITE_URL = "https://esgymfitness.com.tr";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

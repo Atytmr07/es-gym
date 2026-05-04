@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin", "/dashboard", "/payment", "/login", "/register", "/api"],
       },
     ],
-    sitemap: "https://esgymfitness.com/sitemap.xml",
-    host: "https://esgymfitness.com",
+    sitemap: "https://esgymfitness.com.tr/sitemap.xml",
+    host: "https://esgymfitness.com.tr",
   };
 }

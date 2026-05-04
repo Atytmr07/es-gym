@@ -5,7 +5,7 @@ export default function LocalBusinessSchema() {
     "name": "E&S GYM Fitness Center",
     "alternateName": ["E&S Gym", "ES Gym Kepez", "E&S Spor Salonu", "E&S GYM Kepez"],
     "description": "Kepez Kanal Mahallesi'nde premium spor salonu. Reformer pilates, kickboks, EMS fitness, personal training, bölgesel incelme ve çocuk hareket gelişim programları.",
-    "url": "https://esgymfitness.com",
+    "url": "https://esgymfitness.com.tr",
     "telephone": "+905064668981",
     "address": {
       "@type": "PostalAddress",
