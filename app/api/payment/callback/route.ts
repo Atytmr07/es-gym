@@ -5,13 +5,18 @@ import { sendPaymentNotification } from "@/lib/email";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
+// 303 See Other — POST sonrası browser'ı GET ile yönlendir (405 hatasını önler)
+function redirect303(url: string) {
+  return NextResponse.redirect(url, 303);
+}
+
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const token = formData.get("token") as string;
 
   console.log("[Iyzico Callback] token:", token);
 
-  if (!token) return NextResponse.redirect(`${appUrl}/payment/fail?error=no_token`);
+  if (!token) return redirect303(`${appUrl}/payment/fail?error=no_token`);
 
   try {
     const result = await retrieveCheckoutForm(token);
@@ -26,13 +31,13 @@ export async function POST(req: NextRequest) {
           updatedAt: new Date().toISOString(),
         });
       }
-      return NextResponse.redirect(
+      return redirect303(
         `${appUrl}/payment/fail?error=${encodeURIComponent(result.errorMessage ?? "Ödeme doğrulanamadı")}`
       );
     }
 
     if (!txDocs[0]) {
-      return NextResponse.redirect(`${appUrl}/payment/fail?error=tx_not_found`);
+      return redirect303(`${appUrl}/payment/fail?error=tx_not_found`);
     }
 
     const tx = txDocs[0];
@@ -50,7 +55,6 @@ export async function POST(req: NextRequest) {
       const expiresAt = tier?.duration ? new Date(Date.now() + tier.duration * 86400000).toISOString() : null;
       const sessionsTotal = tier?.sessions ?? null;
 
-      // Mevcut abonelikleri oku — üzerine yazma, diziye ekle
       const userData = await fsGet("users", String(tx.userId));
       const existing = (userData?.subscriptions as unknown[]) ?? [];
 
@@ -76,7 +80,6 @@ export async function POST(req: NextRequest) {
         sessionsUsed: sessionsTotal ? 0 : null,
       });
 
-      // İşletme sahibine e-posta bildirimi gönder (hata olursa yok say)
       sendPaymentNotification({
         memberName: String(tx.userName ?? "Bilinmiyor"),
         memberEmail: String(tx.userEmail ?? ""),
@@ -89,15 +92,15 @@ export async function POST(req: NextRequest) {
       }).catch((e) => console.error("[Email] Bildirim gönderilemedi:", e));
     }
 
-    return NextResponse.redirect(`${appUrl}/payment/success?token=${token}`);
+    return redirect303(`${appUrl}/payment/success?token=${token}`);
   } catch (err) {
     console.error("[Iyzico Callback] Hata:", err);
-    return NextResponse.redirect(`${appUrl}/payment/fail?error=server_error`);
+    return redirect303(`${appUrl}/payment/fail?error=server_error`);
   }
 }
 
 export async function GET(req: NextRequest) {
   const token = new URL(req.url).searchParams.get("token");
-  if (!token) return NextResponse.redirect(`${appUrl}/payment/fail?error=no_token`);
-  return NextResponse.redirect(`${appUrl}/payment/success?token=${token}`);
+  if (!token) return redirect303(`${appUrl}/payment/fail?error=no_token`);
+  return redirect303(`${appUrl}/payment/success?token=${token}`);
 }
