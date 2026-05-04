@@ -8,7 +8,8 @@ import type { Subscription } from "@/lib/firestore";
 import Image from "next/image";
 import {
   Dumbbell, LogOut, Clock, Zap, Users, Calendar,
-  ShoppingBag, CheckCircle2, AlertTriangle, ChevronRight, Phone, Plus,
+  ShoppingBag, CheckCircle2, AlertTriangle, ChevronRight,
+  Phone, Plus, Home, ChevronDown,
 } from "lucide-react";
 
 function toDate(val: unknown): Date | null {
@@ -37,23 +38,23 @@ function SubCard({ sub }: { sub: Subscription }) {
     : days > 0;
 
   return (
-    <div className={`bg-zinc-900 border rounded-2xl p-5 ${isActive ? "border-[#FFC107]/30" : "border-zinc-800"}`}>
+    <div className={`bg-zinc-900 border rounded-2xl p-4 sm:p-5 ${isActive ? "border-[#FFC107]/30" : "border-zinc-800"}`}>
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isActive ? "bg-[#FFC107]/15" : "bg-zinc-800"}`}>
-            <Dumbbell className={`w-4.5 h-4.5 ${isActive ? "text-[#FFC107]" : "text-zinc-500"}`} />
+            <Dumbbell className={`w-4 h-4 ${isActive ? "text-[#FFC107]" : "text-zinc-500"}`} />
           </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-tight">{sub.packageName}</p>
-            <p className="text-zinc-500 text-xs">{sub.tierLabel}</p>
+          <div className="min-w-0">
+            <p className="text-white font-bold text-sm leading-tight truncate">{sub.packageName}</p>
+            <p className="text-zinc-500 text-xs truncate">{sub.tierLabel}</p>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0 ml-2">
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${isActive ? "bg-emerald-500/15 text-emerald-400" : "bg-zinc-800 text-zinc-500"}`}>
+          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${isActive ? "bg-emerald-500/15 text-emerald-400" : "bg-zinc-800 text-zinc-500"}`}>
             {isActive ? "● Aktif" : "● Bitti"}
           </span>
           {isExpiring && isActive && (
-            <span className="flex items-center gap-1 text-amber-400 text-xs">
+            <span className="flex items-center gap-1 text-amber-400 text-xs whitespace-nowrap">
               <AlertTriangle className="w-3 h-3" /> Yakında bitiyor
             </span>
           )}
@@ -62,7 +63,7 @@ function SubCard({ sub }: { sub: Subscription }) {
 
       <div className="grid grid-cols-3 gap-2">
         {days !== null && (
-          <div className="bg-zinc-800/60 rounded-xl p-3">
+          <div className="bg-zinc-800/60 rounded-xl p-2.5 sm:p-3">
             <div className="flex items-center gap-1 text-zinc-500 text-xs mb-1">
               <Clock className="w-3 h-3" /> Kalan
             </div>
@@ -71,7 +72,7 @@ function SubCard({ sub }: { sub: Subscription }) {
           </div>
         )}
         {sessionsLeft !== null && (
-          <div className="bg-zinc-800/60 rounded-xl p-3">
+          <div className="bg-zinc-800/60 rounded-xl p-2.5 sm:p-3">
             <div className="flex items-center gap-1 text-zinc-500 text-xs mb-1">
               <Zap className="w-3 h-3" /> Seans
             </div>
@@ -80,7 +81,7 @@ function SubCard({ sub }: { sub: Subscription }) {
           </div>
         )}
         {sub.expiresAt && (
-          <div className="bg-zinc-800/60 rounded-xl p-3">
+          <div className="bg-zinc-800/60 rounded-xl p-2.5 sm:p-3">
             <div className="flex items-center gap-1 text-zinc-500 text-xs mb-1">
               <Calendar className="w-3 h-3" /> Bitiş
             </div>
@@ -95,12 +96,12 @@ function SubCard({ sub }: { sub: Subscription }) {
 }
 
 function SubscriptionsSection({ profile }: { profile: ReturnType<typeof useAuth>["profile"] }) {
-  // subscriptions dizisini kullan; yoksa legacy single-package'dan oluştur
+  const [showExpired, setShowExpired] = useState(false);
+
   const subs: Subscription[] = (() => {
     if (profile?.subscriptions && profile.subscriptions.length > 0) {
       return profile.subscriptions as Subscription[];
     }
-    // Eski format — tek paket
     if (profile?.activePackage) {
       return [{
         id: "legacy",
@@ -119,9 +120,9 @@ function SubscriptionsSection({ profile }: { profile: ReturnType<typeof useAuth>
 
   if (subs.length === 0) {
     return (
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex flex-col gap-4">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0">
             <ShoppingBag className="w-5 h-5 text-zinc-500" />
           </div>
           <div>
@@ -146,22 +147,24 @@ function SubscriptionsSection({ profile }: { profile: ReturnType<typeof useAuth>
   const expired = subs.filter(s => !active.includes(s));
 
   return (
-    <div className="space-y-4">
-      {/* Aktif abonelikler */}
+    <div className="space-y-3">
       {active.map(sub => <SubCard key={sub.id} sub={sub} />)}
 
-      {/* Süresi dolmuş abonelikler (varsa küçük göster) */}
       {expired.length > 0 && (
-        <details className="group">
-          <summary className="text-zinc-600 text-xs cursor-pointer hover:text-zinc-400 transition-colors list-none flex items-center gap-1.5">
-            <span className="group-open:hidden">▶</span>
-            <span className="hidden group-open:inline">▼</span>
+        <div>
+          <button
+            onClick={() => setShowExpired(v => !v)}
+            className="text-zinc-600 text-xs hover:text-zinc-400 transition-colors flex items-center gap-1.5 mb-3"
+          >
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${showExpired ? "rotate-180" : ""}`} />
             Geçmiş üyelikler ({expired.length})
-          </summary>
-          <div className="mt-3 space-y-3">
-            {expired.map(sub => <SubCard key={sub.id} sub={sub} />)}
-          </div>
-        </details>
+          </button>
+          {showExpired && (
+            <div className="space-y-3">
+              {expired.map(sub => <SubCard key={sub.id} sub={sub} />)}
+            </div>
+          )}
+        </div>
       )}
 
       <Link
@@ -179,6 +182,10 @@ export default function DashboardPage() {
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
 
+  useEffect(() => {
+    if (!loading && !user) router.push("/login");
+  }, [loading, user, router]);
+
   const handleLogout = async () => {
     setLoggingOut(true);
     await logout();
@@ -186,89 +193,110 @@ export default function DashboardPage() {
   };
 
   const quickLinks = [
-    { label: "Paket Satın Al", icon: ShoppingBag, href: "/packages", desc: "Yeni üyelik başlat" },
-    { label: "WhatsApp Destek", icon: Phone, href: "https://wa.me/905064668981", desc: "Anlık yardım al", external: true },
-    { label: "Seans Yönetimi", icon: Calendar, href: "https://wa.me/905064668981", desc: "Randevu & iptal", external: true },
-    { label: "Grup Dersleri", icon: Users, href: "/packages#groups", desc: "Program & saatler" },
+    { label: "Paket Al", icon: ShoppingBag, href: "/packages", desc: "Yeni üyelik" },
+    { label: "WhatsApp", icon: Phone, href: "https://wa.me/905064668981", desc: "Destek hattı", external: true },
+    { label: "Randevu", icon: Calendar, href: "https://wa.me/905064668981", desc: "Seans & iptal", external: true },
+    { label: "Dersler", icon: Users, href: "/packages#groups", desc: "Grup saatleri" },
   ];
 
-  if (loading) return null;
+  if (loading || !user) return (
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-[#FFC107] border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-zinc-950">
+      {/* Header */}
       <header className="bg-zinc-900/80 backdrop-blur border-b border-zinc-800 sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
+          {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image src="/logo.jpg" alt="E&S GYM" width={80} height={80} className="h-9 w-auto rounded-lg" />
+            <Image src="/logo.jpg" alt="E&S GYM" width={80} height={80} className="h-8 w-auto rounded-lg" />
           </Link>
-          <button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="flex items-center gap-2 text-zinc-400 hover:text-white text-sm transition-colors"
-          >
-            <LogOut className="w-4 h-4" />
-            Çıkış
-          </button>
+
+          {/* Actions */}
+          <div className="flex items-center gap-1">
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 text-zinc-400 hover:text-white text-sm px-3 py-2 rounded-lg hover:bg-zinc-800 transition-all"
+            >
+              <Home className="w-4 h-4" />
+              <span className="hidden sm:inline">Ana Sayfa</span>
+            </Link>
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="flex items-center gap-1.5 text-zinc-400 hover:text-red-400 text-sm px-3 py-2 rounded-lg hover:bg-zinc-800 transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Çıkış</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-        <div className="mb-8">
-          <p className="text-zinc-500 text-sm">Hoş geldin,</p>
-          <h1 className="text-3xl font-black text-white mt-0.5">
+      <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+
+        {/* Greeting */}
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+          <p className="text-zinc-500 text-xs uppercase tracking-widest mb-1">Hoş geldin</p>
+          <h1 className="text-2xl font-black text-white leading-tight">
             {profile?.name ?? user?.displayName ?? "Üye"}
           </h1>
-          <p className="text-zinc-500 text-sm mt-1">{user?.email}</p>
+          <p className="text-zinc-500 text-sm mt-0.5 truncate">{user?.email}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="md:col-span-2">
-            <h2 className="text-white font-bold text-lg mb-3 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-[#FFC107]" />
-              Üyeliklerim
-            </h2>
-            <SubscriptionsSection profile={profile} />
-          </div>
+        {/* Subscriptions */}
+        <div>
+          <h2 className="text-white font-bold text-base mb-3 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#FFC107]" />
+            Üyeliklerim
+          </h2>
+          <SubscriptionsSection profile={profile} />
+        </div>
 
-          <div className="md:col-span-2">
-            <h2 className="text-white font-bold text-lg mb-3">Hızlı Erişim</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {quickLinks.map(({ label, icon: Icon, href, desc, external }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  target={external ? "_blank" : undefined}
-                  rel={external ? "noopener noreferrer" : undefined}
-                  className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-2 hover:border-[#FFC107]/30 transition-all group"
-                >
-                  <div className="w-9 h-9 bg-zinc-800 group-hover:bg-[#FFC107]/15 rounded-xl flex items-center justify-center transition-colors">
-                    <Icon className="w-4.5 h-4.5 text-zinc-400 group-hover:text-[#FFC107] transition-colors" />
-                  </div>
-                  <p className="text-white font-bold text-sm">{label}</p>
-                  <p className="text-zinc-500 text-xs">{desc}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="md:col-span-2 bg-gradient-to-br from-[#FFC107]/10 to-transparent border border-[#FFC107]/20 rounded-2xl p-6">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <p className="text-[#FFC107] text-xs font-semibold uppercase tracking-widest mb-1">Yardıma mı ihtiyacın var?</p>
-                <h3 className="text-white font-black text-xl">Bize ulaş</h3>
-                <p className="text-zinc-400 text-sm mt-1">0506 466 89 81 · E&S GYM Kepez, Antalya</p>
-              </div>
-              <a
-                href="https://wa.me/905064668981"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#FFC107] hover:bg-[#FFB300] text-gray-900 font-black text-sm px-5 py-3 rounded-xl transition-all whitespace-nowrap"
+        {/* Quick links */}
+        <div>
+          <h2 className="text-white font-bold text-base mb-3">Hızlı Erişim</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {quickLinks.map(({ label, icon: Icon, href, desc, external }) => (
+              <Link
+                key={label}
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+                className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-2 hover:border-[#FFC107]/30 active:scale-95 transition-all group"
               >
-                WhatsApp&apos;ta Yaz
-              </a>
-            </div>
+                <div className="w-9 h-9 bg-zinc-800 group-hover:bg-[#FFC107]/15 rounded-xl flex items-center justify-center transition-colors">
+                  <Icon className="w-4 h-4 text-zinc-400 group-hover:text-[#FFC107] transition-colors" />
+                </div>
+                <p className="text-white font-bold text-sm leading-tight">{label}</p>
+                <p className="text-zinc-500 text-xs">{desc}</p>
+              </Link>
+            ))}
           </div>
         </div>
+
+        {/* Contact CTA */}
+        <div className="bg-gradient-to-br from-[#FFC107]/10 to-transparent border border-[#FFC107]/20 rounded-2xl p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <p className="text-[#FFC107] text-xs font-semibold uppercase tracking-widest mb-1">Yardıma mı ihtiyacın var?</p>
+              <h3 className="text-white font-black text-lg">Bize ulaş</h3>
+              <p className="text-zinc-400 text-sm mt-0.5">0506 466 89 81 · Kepez, Antalya</p>
+            </div>
+            <a
+              href="https://wa.me/905064668981"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#FFC107] hover:bg-[#FFB300] active:scale-95 text-gray-900 font-black text-sm px-5 py-3 rounded-xl transition-all whitespace-nowrap text-center"
+            >
+              WhatsApp&apos;ta Yaz
+            </a>
+          </div>
+        </div>
+
       </main>
     </div>
   );
