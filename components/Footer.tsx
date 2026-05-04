@@ -88,18 +88,18 @@ export default function Footer() {
               Antalya&apos;nın premium fitness ve yaşam merkezi. 2017&apos;den bu yana profesyonel ekipman, sertifikalı kadro ve kapsayıcı bir atmosferle hizmetinizdeyiz.
             </p>
 
-            <div className="flex flex-col gap-3 mb-6">
+            <address className="not-italic flex flex-col gap-3 mb-6">
               <a href="tel:+905064668981" className="flex items-center gap-2.5 text-gray-400 hover:text-[#FFC107] transition-colors text-sm group">
                 <div className="w-7 h-7 bg-gray-800 group-hover:bg-[#FFC107]/20 rounded-lg flex items-center justify-center transition-colors">
                   <Phone className="w-3.5 h-3.5" />
                 </div>
-                0506 466 89 81
+                <span>0506 466 89 81</span>
               </a>
               <div className="flex items-start gap-2.5 text-gray-400 text-sm">
                 <div className="w-7 h-7 bg-gray-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                   <MapPin className="w-3.5 h-3.5" />
                 </div>
-                Kanal Mah. Halide Edip Cad. Kepez, Antalya
+                <span>Kanal Mah. Halide Edip Cad. <br />Kepez, Antalya</span>
               </div>
               <div className="flex items-start gap-2.5 text-gray-400 text-sm">
                 <div className="w-7 h-7 bg-gray-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
@@ -110,7 +110,7 @@ export default function Footer() {
                   <p>Cmt: 09:00 – 20:00 &nbsp;·&nbsp; <span className="text-red-400">Paz: Kapalı</span></p>
                 </div>
               </div>
-            </div>
+            </address>
 
             <div className="flex items-center gap-2">
               <a

@@ -3,8 +3,15 @@ import Packages from "@/components/Packages";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Üyelik Paketleri | E&S GYM Fitness Center",
-  description: "E&S GYM üyelik paketleri — GYM, EMS, Personal Training, Grup Pilates, Bölgesel İncelme ve Çocuk Hareket Gelişim.",
+  title: "Üyelik Paketleri & Fiyatları | E&S GYM – Kepez Spor Salonu",
+  description:
+    "Kepez spor salonu üyelik paketleri ve fiyatları. GYM, EMS fitness, personal training, reformer pilates, kickboks, bölgesel incelme. Kepez'de uygun fiyatlı gym üyeliği.",
+  alternates: { canonical: "https://esgymfitness.com/packages" },
+  openGraph: {
+    title: "Üyelik Paketleri | E&S GYM Fitness Center Kepez",
+    description: "Kepez'in premium spor salonunun tüm paket fiyatları. GYM, pilates, kickboks, EMS ve daha fazlası.",
+    url: "https://esgymfitness.com/packages",
+  },
 };
 
 export default function PackagesPage() {

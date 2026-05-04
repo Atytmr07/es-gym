@@ -9,6 +9,7 @@ const photos = [
   {
     id: 1,
     src: "/gallery/pilates.jpg",
+    alt: "Kepez reformer pilates stüdyosu – E&S GYM Fitness Center",
     label: "Reformer Pilates",
     category: "Pilates Stüdyo",
     rowSpan: true,
@@ -16,6 +17,7 @@ const photos = [
   {
     id: 2,
     src: "/gallery/pilates2.jpg",
+    alt: "Reformer pilates ekipmanları Kepez Antalya – E&S GYM",
     label: "Pilates Stüdyo",
     category: "Reformer Ekipman",
     rowSpan: false,
@@ -23,6 +25,7 @@ const photos = [
   {
     id: 3,
     src: "/gallery/boxing.webp",
+    alt: "Kickboks ve boks eğitimi Kepez spor salonu – E&S GYM",
     label: "Boks Eğitimi",
     category: "Combat Sport",
     rowSpan: false,
@@ -30,6 +33,7 @@ const photos = [
   {
     id: 4,
     src: "/gallery/ropes.webp",
+    alt: "Fonksiyonel antrenman battle ropes Kepez fitness – E&S GYM",
     label: "Battle Ropes",
     category: "Fonksiyonel Antrenman",
     rowSpan: false,
@@ -37,6 +41,7 @@ const photos = [
   {
     id: 5,
     src: "/gallery/community.webp",
+    alt: "E&S GYM Fitness Center üye topluluğu Kepez Antalya",
     label: "Topluluk Ruhu",
     category: "E&S GYM Ailesi",
     rowSpan: false,
@@ -44,6 +49,7 @@ const photos = [
   {
     id: 6,
     src: "/gallery/exterior.jpg",
+    alt: "E&S GYM Fitness Center dış cephe Kanal Mahallesi Kepez Antalya",
     label: "E&S GYM",
     category: "Fitness Center",
     rowSpan: false,
@@ -51,6 +57,7 @@ const photos = [
   {
     id: 7,
     src: "/gallery/interior.jpg",
+    alt: "E&S GYM Kepez spor salonu iç mekan ağırlık alanı",
     label: "GYM Atmosferi",
     category: "Premium Ekipman",
     rowSpan: false,
@@ -58,6 +65,7 @@ const photos = [
   {
     id: 8,
     src: "/gallery/ems-device.jpg",
+    alt: "EMS fitness cihazı Kepez Antalya – E&S GYM yeni nesil teknoloji",
     label: "EMS Fitness",
     category: "Yeni Nesil Teknoloji",
     rowSpan: false,
@@ -65,6 +73,7 @@ const photos = [
   {
     id: 9,
     src: "/gallery/workout.webp",
+    alt: "Güç antrenmanı Kepez spor salonu – E&S GYM Fitness Center",
     label: "Güç Antrenmanı",
     category: "Premium GYM",
     rowSpan: false,
@@ -155,7 +164,7 @@ export default function Gallery() {
             >
               <Image
                 src={photo.src}
-                alt={photo.label}
+                alt={photo.alt}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
                 sizes="(max-width: 768px) 50vw, 33vw"
@@ -243,7 +252,7 @@ export default function Gallery() {
             >
               <Image
                 src={selectedPhoto.src}
-                alt={selectedPhoto.label}
+                alt={selectedPhoto.alt}
                 fill
                 className="object-contain"
                 sizes="90vw"
