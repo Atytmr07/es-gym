@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           });
         } else {
           setProfile(null);
-          await fetch("/api/auth/session", { method: "DELETE" });
+          fetch("/api/auth/session", { method: "DELETE" }).catch(() => {});
         }
       } catch (err) {
         console.error("Auth state change error:", err);
@@ -128,8 +128,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+const defaultAuth: AuthContextValue = {
+  user: null,
+  profile: null,
+  loading: false,
+  login: async () => {},
+  register: async () => {},
+  logout: async () => {},
+  refreshProfile: async () => {},
+};
+
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
-  return ctx;
+  return ctx ?? defaultAuth;
 }
