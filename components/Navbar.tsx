@@ -12,6 +12,7 @@ const links = [
   { label: "Yaşam Alanı", href: "/#lifestyle" },
   { label: "Galeri", href: "/#gallery" },
   { label: "Paketler", href: "/packages" },
+  { label: "Hakkımızda", href: "/hakkimizda" },
   { label: "İletişim", href: "/#contact" },
 ];
 

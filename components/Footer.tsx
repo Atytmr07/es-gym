@@ -16,6 +16,7 @@ const navLinks = [
   { label: "Galeri", href: "/#gallery" },
   { label: "Üye Yorumları", href: "/#testimonials" },
   { label: "Paketler", href: "/packages" },
+  { label: "Hakkımızda", href: "/hakkimizda" },
   { label: "VKİ Hesapla", href: "/#bmi" },
   { label: "İletişim", href: "/#contact" },
 ];
