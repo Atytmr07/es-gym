@@ -8,13 +8,22 @@ export function proxy(req: NextRequest) {
   const roleCookie = req.cookies.get("user_role")?.value;
 
   // Public: statik dosyalar, API rotaları, genel sayfalar
+  const PUBLIC_PAGES = [
+    "/",
+    "/packages",
+    "/hakkimizda",
+    "/kvkk",
+    "/mesafeli-satis",
+    "/iptal-iade",
+    "/kullanim-kosullari",
+  ];
+
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/") ||
-    pathname.startsWith("/payment/") ||  // checkout kendi auth kontrolünü yapıyor
+    pathname.startsWith("/payment/") ||
     pathname.match(/\.(ico|png|jpg|jpeg|svg|mp4|webp|woff2?)$/) ||
-    pathname === "/" ||
-    pathname === "/packages"
+    PUBLIC_PAGES.includes(pathname)
   ) {
     return NextResponse.next();
   }
