@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
-import { fsGet, fsAdd, fsPatch } from "@/lib/firestore-server";
+import { fsGet, fsAdd, fsPatch, fsQuery } from "@/lib/firestore-server";
 import { initializeCheckoutForm } from "@/lib/iyzico";
 
 export async function POST(req: NextRequest) {
@@ -34,6 +34,31 @@ export async function POST(req: NextRequest) {
   const userName = String(userDoc.name ?? "Ad Soyad");
   const nameParts = userName.split(" ");
 
+  // Duplicate işlem koruması: Aynı kullanıcının son pending işlemini bul.
+  // fsQuery limit:1 döndürdüğünden; bulunan işlem aynı paket+tier ve 5 dakika
+  // içindeyse "expired" yaparak temiz bir başlangıç sağla.
+  // Bu, çift tıklama veya ağ hatası sonrası yenileme senaryolarını önler.
+  const fiveMinutesAgo = new Date(Date.now() - 5 * 60_000).toISOString();
+  try {
+    const recentTxs = await fsQuery("transactions", "userId", session.uid);
+    const candidate = recentTxs[0];
+    if (
+      candidate &&
+      String(candidate.status) === "pending" &&
+      String(candidate.packageId) === String(packageId) &&
+      String(candidate.tierLabel) === tier.label &&
+      String(candidate.createdAt) > fiveMinutesAgo
+    ) {
+      console.log("[Payment] Duplicate pending işlem bulundu, expired yapılıyor:", candidate._id);
+      await fsPatch("transactions", candidate._id, {
+        status: "expired",
+        updatedAt: new Date().toISOString(),
+      });
+    }
+  } catch {
+    // Duplicate kontrolü opsiyonel — hata olursa devam et
+  }
+
   const txId = await fsAdd("transactions", {
     userId: session.uid,
     userEmail: userDoc.email,
@@ -62,7 +87,9 @@ export async function POST(req: NextRequest) {
       name: nameParts[0] || "Ad",
       surname: nameParts.slice(1).join(" ") || "Soyad",
       email: String(userDoc.email),
-      identityNumber: "74300864791",
+      // TODO: Kullanıcıdan TC Kimlik No toplanırsa userDoc.identityNumber kullanılmalı.
+      // iyzico sanal ürünlerde kimlik doğrulaması yapmaz; bu numara format zorunluluğu için.
+      identityNumber: String(userDoc.identityNumber ?? "74300864791"),
       registrationAddress: "Kepez, Antalya",
       ip,
       city: "Antalya",

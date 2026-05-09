@@ -42,6 +42,14 @@ export async function POST(req: NextRequest) {
 
     const tx = txDocs[0];
 
+    // Idempotency: iyzico bazen aynı callback'i iki kez gönderir.
+    // İşlem zaten başarıyla tamamlandıysa tekrar işleme alma —
+    // aksi takdirde üyelik çift eklenir.
+    if (tx.status === "success") {
+      console.log("[Iyzico Callback] Zaten işlendi, tekrar atlandı:", tx._id);
+      return redirect303(`${appUrl}/payment/success?token=${token}`);
+    }
+
     await fsPatch("transactions", tx._id, {
       status: "success",
       iyzicoPaymentId: result.paymentId ?? null,
