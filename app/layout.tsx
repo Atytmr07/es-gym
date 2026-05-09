@@ -96,9 +96,9 @@ export const metadata: Metadata = {
       "Kepez Kanal Mahallesi'nde reformer pilates, kickboks, EMS fitness, personal training ve daha fazlası. Kepez'in en iyi gym'i.",
     images: [
       {
-        url: "/gallery/workout.webp",
-        width: 1200,
-        height: 630,
+        url: "/logo.jpg",
+        width: 1080,
+        height: 1080,
         alt: "E&S GYM Fitness Center Kepez Antalya",
       },
     ],
@@ -109,7 +109,7 @@ export const metadata: Metadata = {
     title: "E&S GYM Fitness Center | Kepez, Antalya",
     description:
       "Kepez Kanal Mahallesi'nde premium spor salonu. Pilates, kickboks, EMS, PT.",
-    images: ["/gallery/workout.webp"],
+    images: ["/logo.jpg"],
   },
 
   icons: {
