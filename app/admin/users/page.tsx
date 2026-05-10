@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { Search, Users, Clock, Zap, AlertTriangle, Loader2, MinusCircle, PlusCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Users, Clock, Zap, AlertTriangle, Loader2, MinusCircle, PlusCircle, ChevronDown, ChevronUp, Phone } from "lucide-react";
 
 interface Subscription {
   id: string;
@@ -26,6 +26,22 @@ interface UserRow {
   sessionsUsed: number | null;
   createdAt: string | null;
   subscriptions?: Subscription[];
+}
+
+function statusInfo(u: UserRow): { label: string; color: string } {
+  if (!u.activePackage) return { label: "Paket Yok", color: "text-zinc-500 bg-zinc-800" };
+  if (u.expiresAt) {
+    const days = Math.ceil((new Date(u.expiresAt).getTime() - Date.now()) / 86400000);
+    if (days <= 0) return { label: "Süresi Doldu", color: "text-red-400 bg-red-500/10" };
+    if (days <= 7) return { label: `${days} gün kaldı`, color: "text-amber-400 bg-amber-500/10" };
+    return { label: `${days} gün`, color: "text-emerald-400 bg-emerald-500/10" };
+  }
+  if (u.sessionsTotal !== null) {
+    const left = u.sessionsTotal - (u.sessionsUsed ?? 0);
+    if (left <= 0) return { label: "Seans Bitti", color: "text-red-400 bg-red-500/10" };
+    return { label: `${left} seans`, color: "text-emerald-400 bg-emerald-500/10" };
+  }
+  return { label: "Aktif", color: "text-emerald-400 bg-emerald-500/10" };
 }
 
 function SessionBadge({ sub, userId, onUpdate }: {
@@ -66,19 +82,111 @@ function SessionBadge({ sub, userId, onUpdate }: {
   );
 }
 
-function UserRow({ u, onUpdate }: { u: UserRow; onUpdate: (u: UserRow) => void }) {
+function SessionDetail({ u, onUpdate }: { u: UserRow; onUpdate: (u: UserRow) => void }) {
+  const sessionSubs = u.subscriptions?.filter(s => s.sessionsTotal !== null) ?? [];
+  if (sessionSubs.length === 0) return null;
+
+  const handleSessionUpdate = (subId: string, used: number) => {
+    onUpdate({
+      ...u,
+      subscriptions: u.subscriptions?.map(s => s.id === subId ? { ...s, sessionsUsed: used } : s),
+    });
+  };
+
+  return (
+    <div className="mt-3 pt-3 border-t border-zinc-800">
+      <p className="text-zinc-500 text-[10px] font-semibold uppercase tracking-wider mb-2">Seans Takibi</p>
+      <div className="flex flex-wrap gap-2">
+        {sessionSubs.map(sub => (
+          <div key={sub.id} className="flex items-center gap-2 bg-zinc-800 rounded-xl px-3 py-2">
+            <span className="text-zinc-300 text-xs">{sub.packageName} — {sub.tierLabel}</span>
+            <SessionBadge sub={sub} userId={u.uid} onUpdate={handleSessionUpdate} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Mobile: kart görünümü ────────────────────────────────────────────────────
+
+function UserCard({ u, onUpdate }: { u: UserRow; onUpdate: (u: UserRow) => void }) {
+  const [expanded, setExpanded] = useState(false);
+  const { label, color } = statusInfo(u);
+  const hasSessions = u.subscriptions?.some(s => s.sessionsTotal !== null);
+  const fmtDate = (d: string | null) =>
+    d ? new Date(d).toLocaleDateString("tr-TR", { day: "numeric", month: "short", year: "2-digit" }) : "—";
+
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+      {/* Üst satır: avatar + isim + durum */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 bg-[#FFC107]/15 rounded-full flex items-center justify-center text-[#FFC107] font-black text-sm shrink-0">
+            {u.name?.[0]?.toUpperCase() ?? "?"}
+          </div>
+          <div className="min-w-0">
+            <p className="text-white text-sm font-semibold truncate">{u.name}</p>
+            <p className="text-zinc-500 text-xs truncate">{u.email}</p>
+          </div>
+        </div>
+        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${color}`}>{label}</span>
+      </div>
+
+      {/* Meta bilgiler */}
+      <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2">
+        {u.phone && (
+          <div className="flex items-center gap-1.5 text-zinc-400 text-xs">
+            <Phone className="w-3 h-3 shrink-0" />
+            <span className="truncate">{u.phone}</span>
+          </div>
+        )}
+        {u.activePackage && (
+          <div className="text-zinc-400 text-xs truncate">
+            <span className="text-zinc-500">Paket: </span>{u.activePackage}
+          </div>
+        )}
+        <div className="flex items-center gap-1 text-zinc-500 text-xs">
+          <Clock className="w-3 h-3 shrink-0" />
+          <span>Kayıt: {fmtDate(u.createdAt)}</span>
+        </div>
+        <div className="text-zinc-500 text-xs">
+          {u.expiresAt
+            ? <span>Bitiş: {fmtDate(u.expiresAt)}</span>
+            : u.sessionsTotal !== null
+              ? <span>{u.sessionsTotal - (u.sessionsUsed ?? 0)} seans kaldı</span>
+              : null}
+        </div>
+      </div>
+
+      {/* Seans açma butonu */}
+      {hasSessions && (
+        <button
+          onClick={() => setExpanded(e => !e)}
+          className="mt-3 flex items-center gap-1 text-zinc-500 hover:text-zinc-300 text-xs transition-colors"
+        >
+          {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          Seans takibini {expanded ? "kapat" : "aç"}
+        </button>
+      )}
+
+      {expanded && <SessionDetail u={u} onUpdate={onUpdate} />}
+    </div>
+  );
+}
+
+// ─── Desktop: tablo satırı ────────────────────────────────────────────────────
+
+function UserTableRow({ u, onUpdate }: { u: UserRow; onUpdate: (u: UserRow) => void }) {
   const [expanded, setExpanded] = useState(false);
   const { label, color } = statusInfo(u);
   const hasSessions = u.subscriptions?.some(s => s.sessionsTotal !== null);
 
   const handleSessionUpdate = (subId: string, used: number) => {
-    const updated = {
+    onUpdate({
       ...u,
-      subscriptions: u.subscriptions?.map(s =>
-        s.id === subId ? { ...s, sessionsUsed: used } : s
-      ),
-    };
-    onUpdate(updated);
+      subscriptions: u.subscriptions?.map(s => s.id === subId ? { ...s, sessionsUsed: used } : s),
+    });
   };
 
   return (
@@ -125,7 +233,6 @@ function UserRow({ u, onUpdate }: { u: UserRow; onUpdate: (u: UserRow) => void }
         </td>
       </tr>
 
-      {/* Seans detayı */}
       {expanded && u.subscriptions && (
         <tr className="bg-zinc-800/20">
           <td colSpan={6} className="px-5 py-3">
@@ -145,21 +252,7 @@ function UserRow({ u, onUpdate }: { u: UserRow; onUpdate: (u: UserRow) => void }
   );
 }
 
-function statusInfo(u: UserRow): { label: string; color: string } {
-  if (!u.activePackage) return { label: "Paket Yok", color: "text-zinc-500 bg-zinc-800" };
-  if (u.expiresAt) {
-    const days = Math.ceil((new Date(u.expiresAt).getTime() - Date.now()) / 86400000);
-    if (days <= 0) return { label: "Süresi Doldu", color: "text-red-400 bg-red-500/10" };
-    if (days <= 7) return { label: `${days} gün kaldı`, color: "text-amber-400 bg-amber-500/10" };
-    return { label: `${days} gün`, color: "text-emerald-400 bg-emerald-500/10" };
-  }
-  if (u.sessionsTotal !== null) {
-    const left = u.sessionsTotal - (u.sessionsUsed ?? 0);
-    if (left <= 0) return { label: "Seans Bitti", color: "text-red-400 bg-red-500/10" };
-    return { label: `${left} seans`, color: "text-emerald-400 bg-emerald-500/10" };
-  }
-  return { label: "Aktif", color: "text-emerald-400 bg-emerald-500/10" };
-}
+// ─── Ana sayfa ────────────────────────────────────────────────────────────────
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -173,6 +266,9 @@ export default function AdminUsersPage() {
       .then(setUsers)
       .finally(() => setLoading(false));
   }, []);
+
+  const handleUpdate = (updated: UserRow) =>
+    setUsers(prev => prev.map(x => x.uid === updated.uid ? updated : x));
 
   const filtered = useMemo(() => {
     let list = users.filter((u) => u.role !== "admin");
@@ -230,7 +326,7 @@ export default function AdminUsersPage() {
         <p className="text-zinc-400 mt-1">Tüm kayıtlı üyelerin listesi</p>
       </div>
 
-      {/* Summary cards */}
+      {/* Özet kartlar */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
           <div className="flex items-center gap-2 text-zinc-400 text-xs mb-2">
@@ -244,7 +340,7 @@ export default function AdminUsersPage() {
           </div>
           <p className="text-2xl font-black text-emerald-400">{totalActive}</p>
         </div>
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+        <div className="col-span-2 sm:col-span-1 bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
           <div className="flex items-center gap-2 text-zinc-400 text-xs mb-2">
             <AlertTriangle className="w-3.5 h-3.5" /> Bu Hafta Bitiyor
           </div>
@@ -252,7 +348,7 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filtreler */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
@@ -283,8 +379,18 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+      {/* Mobil: kart listesi */}
+      <div className="block sm:hidden space-y-3">
+        {filtered.map((u) => (
+          <UserCard key={u.uid} u={u} onUpdate={handleUpdate} />
+        ))}
+        {filtered.length === 0 && (
+          <p className="text-center text-zinc-500 text-sm py-12">Eşleşen üye bulunamadı.</p>
+        )}
+      </div>
+
+      {/* Masaüstü: tablo */}
+      <div className="hidden sm:block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px]">
             <thead className="border-b border-zinc-800">
@@ -299,9 +405,7 @@ export default function AdminUsersPage() {
             </thead>
             <tbody className="divide-y divide-zinc-800">
               {filtered.map((u) => (
-                <UserRow key={u.uid} u={u} onUpdate={(updated) =>
-                  setUsers(prev => prev.map(x => x.uid === updated.uid ? updated : x))
-                } />
+                <UserTableRow key={u.uid} u={u} onUpdate={handleUpdate} />
               ))}
               {filtered.length === 0 && (
                 <tr>
@@ -317,6 +421,9 @@ export default function AdminUsersPage() {
           <p className="text-zinc-500 text-xs">{filtered.length} üye gösteriliyor</p>
         </div>
       </div>
+
+      {/* Mobil alt bilgi */}
+      <p className="block sm:hidden text-zinc-600 text-xs text-center">{filtered.length} üye gösteriliyor</p>
     </div>
   );
 }
