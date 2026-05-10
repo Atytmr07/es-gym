@@ -71,7 +71,12 @@ function LoginForm() {
           </div>
 
           <div>
-            <label className="block text-zinc-400 text-sm font-medium mb-2">Şifre</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-zinc-400 text-sm font-medium">Şifre</label>
+              <Link href="/sifremi-unuttum" className="text-[#FFC107] text-xs hover:underline">
+                Şifremi unuttum
+              </Link>
+            </div>
             <div className="relative">
               <input
                 type={showPw ? "text" : "password"}
