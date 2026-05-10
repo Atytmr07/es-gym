@@ -7,10 +7,14 @@ import BMICalculator from "@/components/BMICalculator";
 import ContactLocation from "@/components/ContactLocation";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import FAQSchema from "@/components/FAQSchema";
+import WebsiteSchema from "@/components/WebsiteSchema";
 
 export default function Home() {
   return (
     <main className="bg-white min-h-screen overflow-x-hidden">
+      <FAQSchema />
+      <WebsiteSchema />
       <Navbar />
       <Hero />
       <LifestyleZone />

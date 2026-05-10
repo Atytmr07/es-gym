@@ -1,25 +1,26 @@
 import Navbar from "@/components/Navbar";
 import Packages from "@/components/Packages";
 import Footer from "@/components/Footer";
+import ServiceSchema from "@/components/ServiceSchema";
 
 export const metadata = {
   title: "Üyelik Paketleri & Fiyatları | E&S GYM – Kepez Spor Salonu",
   description:
     "Kepez spor salonu üyelik paketleri ve fiyatları. GYM, EMS fitness, personal training, reformer pilates, kickboks, bölgesel incelme. Kepez'de uygun fiyatlı gym üyeliği.",
-  alternates: { canonical: "https://esgymfitness.com/packages" },
+  alternates: { canonical: "https://esgymfitness.com.tr/packages" },
   openGraph: {
     title: "Üyelik Paketleri | E&S GYM Fitness Center Kepez",
     description: "Kepez'in premium spor salonunun tüm paket fiyatları. GYM, pilates, kickboks, EMS ve daha fazlası.",
-    url: "https://esgymfitness.com/packages",
+    url: "https://esgymfitness.com.tr/packages",
   },
 };
 
 export default function PackagesPage() {
   return (
     <main className="bg-zinc-950 min-h-screen overflow-x-hidden">
+      <ServiceSchema />
       <Navbar />
 
-      {/* Page header */}
       <div className="bg-zinc-950 pt-36 pb-16 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.025] pointer-events-none"
