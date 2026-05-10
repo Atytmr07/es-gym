@@ -66,6 +66,13 @@ export default function Hero() {
             Premium ekipman. Uzman kadro. Gerçek bir topluluk.
           </motion.p>
 
+          {/* SEO: Kepez & Antalya lokal anahtar kelimeler — görsel olarak gizli, crawler'a açık */}
+          <p className="sr-only">
+            Kepez spor salonu, Kepez gym, Kepez fitness merkezi, Antalya Kepez gym üyeliği,
+            Kanal Mahallesi spor salonu, Kepez pilates, Kepez kickboks, Kepez EMS fitness,
+            Kepez personal trainer, Antalya uygun gym üyeliği, Kepez bölgesel incelme.
+          </p>
+
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

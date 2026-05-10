@@ -43,6 +43,10 @@ export default function ContactLocation() {
             Bizi{" "}
             <span className="text-[#FFC107]">Bul & Takip Et.</span>
           </h2>
+          <p className="text-gray-500 text-base mt-3 max-w-xl mx-auto">
+            Kepez, Antalya&apos;nın kalbinde — Kanal Mahallesi Halide Edip Caddesi üzerinde.
+            Kepez spor salonu, pilates, kickboks ve EMS fitness için doğru adres.
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
