@@ -65,6 +65,7 @@ const PUBLIC_PAGES = [
   "/",
   "/packages",
   "/hakkimizda",
+  "/ems-fitness-kepez",
   "/kvkk",
   "/mesafeli-satis",
   "/iptal-iade",
