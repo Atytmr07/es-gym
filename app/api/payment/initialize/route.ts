@@ -119,6 +119,7 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     checkoutFormContent: result.checkoutFormContent,
+    paymentPageUrl: result.paymentPageUrl ?? null,
     token: result.token,
     transactionId: txId,
   });

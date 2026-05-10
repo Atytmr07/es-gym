@@ -3,7 +3,12 @@
 import { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, AlertCircle, Lock, ArrowLeft, CheckSquare, Square } from "lucide-react";
+import { Loader2, AlertCircle, Lock, ArrowLeft, CheckSquare, Square, ExternalLink } from "lucide-react";
+
+function isMobile(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
 
 function CheckoutContent() {
   const { user, loading: authLoading } = useAuth();
@@ -17,6 +22,7 @@ function CheckoutContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formHtml, setFormHtml] = useState("");
+  const [paymentPageUrl, setPaymentPageUrl] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -26,39 +32,72 @@ function CheckoutContent() {
     }
   }, [user, authLoading, router, packageId, tierIndex, tierName, price]);
 
-  const handleProceed = () => {
-    if (!user || !packageId || tierIndex === null) return;
-    if (!agreed) return;
+  const handleProceed = async () => {
+    if (!user || !packageId || tierIndex === null || !agreed) return;
 
     setLoading(true);
-    fetch("/api/payment/initialize", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ packageId, tierIndex: Number(tierIndex) }),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setFormHtml(data.checkoutFormContent ?? "");
-        }
-      })
-      .catch(() => setError("Ödeme başlatılamadı. Lütfen tekrar deneyin."))
-      .finally(() => setLoading(false));
+    setError("");
+    try {
+      const res = await fetch("/api/payment/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ packageId, tierIndex: Number(tierIndex) }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        setError(data.error);
+        return;
+      }
+
+      // Mobilede doğrudan Iyzico sayfasına yönlendir
+      if (isMobile() && data.paymentPageUrl) {
+        window.location.href = data.paymentPageUrl;
+        return;
+      }
+
+      setPaymentPageUrl(data.paymentPageUrl ?? null);
+      setFormHtml(data.checkoutFormContent ?? "");
+    } catch {
+      setError("Ödeme başlatılamadı. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Embed: inline scriptler önce (iyziInit), sonra external (bundle.js)
   useEffect(() => {
     if (!formHtml || !formRef.current) return;
-    formRef.current.innerHTML = formHtml;
-    formRef.current.querySelectorAll("script").forEach((oldScript) => {
-      const newScript = document.createElement("script");
-      Array.from(oldScript.attributes).forEach((attr) =>
-        newScript.setAttribute(attr.name, attr.value)
-      );
-      newScript.textContent = oldScript.textContent;
-      oldScript.parentNode?.replaceChild(newScript, oldScript);
+    const container = formRef.current;
+
+    // HTML'i parse et
+    const temp = document.createElement("div");
+    temp.innerHTML = formHtml;
+
+    // Script olmayan elemanları (iyzipay-checkout-form div) ekle
+    Array.from(temp.childNodes)
+      .filter(n => !(n instanceof HTMLScriptElement))
+      .forEach(n => container.appendChild(n.cloneNode(true)));
+
+    // 1) Inline scriptler (iyziInit tanımı)
+    Array.from(temp.querySelectorAll("script:not([src])")).forEach(s => {
+      const script = document.createElement("script");
+      script.textContent = s.textContent;
+      document.head.appendChild(script);
     });
+
+    // 2) External scriptler (bundle.js) — inline'dan sonra eklenir
+    Array.from(temp.querySelectorAll("script[src]")).forEach(s => {
+      const script = document.createElement("script");
+      script.src = (s as HTMLScriptElement).src;
+      script.async = false;
+      document.body.appendChild(script);
+    });
+
+    // Form yüklendikten sonra scroll
+    setTimeout(() => {
+      container.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 600);
   }, [formHtml]);
 
   if (authLoading) {
@@ -103,7 +142,7 @@ function CheckoutContent() {
           </div>
         </div>
 
-        {/* Ön Bilgilendirme Formu onayı — ödeme başlamadan önce göster */}
+        {/* Ön bilgilendirme + onay */}
         {!formHtml && (
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 mb-5 space-y-5">
             <h2 className="text-white font-bold text-sm">Ön Bilgilendirme Formu</h2>
@@ -170,10 +209,23 @@ function CheckoutContent() {
           </div>
         )}
 
-        {/* Iyzico ödeme formu */}
+        {/* Masaüstü: embed form */}
         {formHtml && !loading && (
-          <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
-            <div ref={formRef} />
+          <div className="bg-white rounded-2xl shadow-xl">
+            {/* Yedek link: form yüklenmezse */}
+            {paymentPageUrl && (
+              <div className="px-6 pt-5 pb-2 text-center">
+                <p className="text-zinc-400 text-xs mb-2">Form yüklenmiyor mu?</p>
+                <a
+                  href={paymentPageUrl}
+                  className="inline-flex items-center gap-1.5 text-[#FFC107] text-sm font-semibold hover:underline"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  Ödeme sayfasını aç
+                </a>
+              </div>
+            )}
+            <div ref={formRef} className="min-h-[480px]" />
           </div>
         )}
       </div>
