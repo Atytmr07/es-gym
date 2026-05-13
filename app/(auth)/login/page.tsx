@@ -30,7 +30,7 @@ function LoginForm() {
         .split("; ")
         .find((r) => r.startsWith("user_role="))
         ?.split("=")[1];
-      router.push(from ?? (role === "admin" ? "/admin" : "/dashboard"));
+      router.push(role === "admin" ? "/admin" : (from ?? "/dashboard"));
     } catch {
       setError("E-posta veya şifre hatalı. Lütfen tekrar deneyin.");
       setLoading(false);
